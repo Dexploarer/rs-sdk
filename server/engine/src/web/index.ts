@@ -129,10 +129,10 @@ export async function startWeb() {
                 }
             }
 
-            // RuneLight panel (serves built files from runelight/dist/)
-            if (url.pathname.startsWith('/runelight')) {
+            // scAIpe panel (serves built files from runelight/dist/)
+            if (url.pathname.startsWith('/scaipe')) {
                 try {
-                    let relPath = url.pathname.substring('/runelight'.length);
+                    let relPath = url.pathname.substring('/scaipe'.length);
                     if (!relPath || relPath === '/') relPath = '/index.html';
                     // Navigate from engine src/web/ → src/ → engine/ → server/ → repo root → runelight/dist/
                     const filePath = `${import.meta.dir}/../../../../runelight/dist${relPath}`;

@@ -4,7 +4,7 @@ import solid from "vite-plugin-solid";
 export default defineConfig({
 	plugins: [solid()],
 	root: "src/mainview",
-	base: "/runelight/",
+	base: "/scaipe/",
 	build: {
 		outDir: "../../dist",
 		emptyOutDir: true,

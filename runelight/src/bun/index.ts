@@ -30,7 +30,7 @@ const WIN_HEIGHT = 900;
 const PANEL_WIDTH = 300;
 const GAME_WIDTH = WIN_WIDTH - PANEL_WIDTH;
 
-const PANEL_URL = "http://localhost:8888/runelight/index.html";
+const PANEL_URL = "http://localhost:8888/scaipe/index.html";
 
 // ============ Application Menu ============
 
@@ -125,7 +125,7 @@ ApplicationMenu.on("application-menu-clicked", (event: any) => {
 // ============ System Tray ============
 
 const tray = new Tray({
-	title: "RL",
+	title: "scAIpe",
 });
 
 tray.setMenu([

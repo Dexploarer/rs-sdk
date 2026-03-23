@@ -19,7 +19,7 @@ export default function App() {
 				type: "sdk_connect",
 				username: "dexrunner",
 				password: "",
-				clientId: `runelight-${Date.now()}`,
+				clientId: `scaipe-${Date.now()}`,
 				mode: "observe",
 			}));
 		};
