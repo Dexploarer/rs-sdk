@@ -754,17 +754,39 @@ const server = Bun.serve({
 
         // ============ Agent API ============
 
-        // Save API key
+        // Save API key (manual paste)
         if (url.pathname === '/agent/save-key' && req.method === 'POST') {
             try {
                 const body = await req.json() as { apiKey: string };
-                if (!body.apiKey || !body.apiKey.startsWith('sk-')) {
-                    return new Response(JSON.stringify({ success: false, error: 'Invalid API key format' }), {
+                if (!body.apiKey) {
+                    return new Response(JSON.stringify({ success: false, error: 'No key provided' }), {
                         status: 400, headers: { 'Content-Type': 'application/json', ...corsHeaders }
                     });
                 }
                 saveApiKeyExternal(body.apiKey);
                 return new Response(JSON.stringify({ success: true }), {
+                    headers: { 'Content-Type': 'application/json', ...corsHeaders }
+                });
+            } catch (e: any) {
+                return new Response(JSON.stringify({ success: false, error: e.message }), {
+                    status: 500, headers: { 'Content-Type': 'application/json', ...corsHeaders }
+                });
+            }
+        }
+
+        // Run claude setup-token CLI
+        if (url.pathname === '/agent/setup-token' && req.method === 'POST') {
+            try {
+                const proc = Bun.spawn(['claude', 'setup-token'], {
+                    stdout: 'pipe',
+                    stderr: 'pipe',
+                    stdin: 'inherit',
+                    env: { ...process.env, PATH: process.env.PATH || '/usr/local/bin:/usr/bin:/bin' },
+                });
+                await proc.exited;
+                // After setup-token runs, check if we now have a key
+                const hasKey = hasApiKey();
+                return new Response(JSON.stringify({ success: true, hasKey }), {
                     headers: { 'Content-Type': 'application/json', ...corsHeaders }
                 });
             } catch (e: any) {

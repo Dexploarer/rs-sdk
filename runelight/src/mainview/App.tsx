@@ -535,11 +535,26 @@ function AIPanel() {
 		} catch {}
 	}
 
+	async function setupToken() {
+		setMessages((prev) => [...prev, { role: "system", text: "Running setup-token... Check your terminal/browser." }]);
+		try {
+			const resp = await fetch(`${GW}/agent/setup-token`, { method: "POST" });
+			const data = await resp.json();
+			if (data.success || data.hasKey) {
+				setKeySaved(true);
+				setMessages((prev) => [...prev, { role: "system", text: "Token saved. Set a goal and press Start." }]);
+			} else {
+				setMessages((prev) => [...prev, { role: "system", text: `Setup failed: ${data.error || "unknown"}` }]);
+			}
+		} catch (e: any) {
+			setMessages((prev) => [...prev, { role: "system", text: `Error: ${e.message}` }]);
+		}
+	}
+
 	async function saveKey() {
 		const key = apiKey().trim();
 		if (!key) return;
 		try {
-			// Save by starting and immediately stopping — the agent saves the key on construction
 			const resp = await fetch(`${GW}/agent/save-key`, {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
@@ -548,12 +563,12 @@ function AIPanel() {
 			const data = await resp.json();
 			if (data.success) {
 				setKeySaved(true);
-				setMessages((prev) => [...prev, { role: "system", text: "API key saved. Set a goal and press Start." }]);
+				setMessages((prev) => [...prev, { role: "system", text: "Key saved. Set a goal and press Start." }]);
 			} else {
 				setMessages((prev) => [...prev, { role: "system", text: `Failed: ${data.error}` }]);
 			}
 		} catch (e: any) {
-			setMessages((prev) => [...prev, { role: "system", text: `Error saving key: ${e.message}` }]);
+			setMessages((prev) => [...prev, { role: "system", text: `Error: ${e.message}` }]);
 		}
 	}
 
@@ -562,16 +577,11 @@ function AIPanel() {
 			<div class="ai-config">
 				<Show when={!keySaved()}>
 					<div class="ai-setup">
-						<div class="ai-setup-title">Setup API Key</div>
-						<p class="ai-setup-desc">
-							Get your key from the Anthropic Console, paste it below.
-						</p>
-						<button
-							class="ai-link-btn"
-							onClick={() => window.open("https://console.anthropic.com/settings/keys", "_blank")}
-						>
-							Open Anthropic Console
+						<div class="ai-setup-title">Connect to Claude</div>
+						<button class="ai-link-btn" onClick={setupToken}>
+							Setup Token
 						</button>
+						<p class="ai-setup-desc">Or paste a key manually:</p>
 						<div class="ai-setup-row">
 							<input
 								type="password"
