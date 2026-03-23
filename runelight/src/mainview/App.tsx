@@ -544,8 +544,11 @@ function AIPanel() {
 			setOauthStep("waiting_code");
 			const resp = await fetch(`${GW}/agent/oauth/start`, { method: "POST" });
 			const data = await resp.json();
-			if (!data.success) {
-				setMessages((prev) => [...prev, { role: "system", text: `OAuth failed: ${data.error}` }]);
+			if (data.success && data.authUrl) {
+				// Open the auth URL in the user's browser
+				window.open(data.authUrl, "_blank");
+			} else {
+				setMessages((prev) => [...prev, { role: "system", text: `OAuth failed: ${data.error || "No auth URL"}` }]);
 				setOauthStep("idle");
 			}
 		} catch (e: any) {

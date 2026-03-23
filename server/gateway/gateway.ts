@@ -828,8 +828,6 @@ const server = Bun.serve({
         if (url.pathname === '/agent/oauth/start' && req.method === 'POST') {
             try {
                 const { authUrl } = await startAnthropicOAuth();
-                // Open the auth URL in system browser
-                Bun.spawn(['open', authUrl]);
                 return new Response(JSON.stringify({ success: true, authUrl }), {
                     headers: { 'Content-Type': 'application/json', ...corsHeaders }
                 });
