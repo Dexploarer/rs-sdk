@@ -11,12 +11,17 @@ import type {
     SDKConnectionMode
 } from './types';
 
+import { createAgent, Agent, hasApiKey } from './agent';
+
 const GATEWAY_PORT = parseInt(process.env.AGENT_PORT || '7780');
 
 // Script runner state (for RuneLight)
 let activeScript: any = null;
 let activeScriptName: string | null = null;
 let scriptOutput: string[] = [];
+
+// Agent state (singleton - one agent at a time)
+let activeAgent: Agent | null = null;
 
 // Login server configuration - when enabled, SDK connections require per-bot authentication
 const LOGIN_SERVER_ENABLED = process.env.LOGIN_SERVER === 'true';
@@ -747,6 +752,157 @@ const server = Bun.serve({
             });
         }
 
+        // ============ Agent API ============
+
+        // Check if API key is saved
+        if (url.pathname === '/agent/has-key' && req.method === 'GET') {
+            return new Response(JSON.stringify({ hasKey: hasApiKey() }), {
+                headers: { 'Content-Type': 'application/json', ...corsHeaders }
+            });
+        }
+
+        // Start the agent
+        if (url.pathname === '/agent/start' && req.method === 'POST') {
+            try {
+                const body = await req.json() as { botName: string; apiKey: string; model?: string; goal?: string };
+
+                if (!body.botName) {
+                    return new Response(JSON.stringify({ success: false, error: 'botName is required' }), {
+                        status: 400,
+                        headers: { 'Content-Type': 'application/json', ...corsHeaders }
+                    });
+                }
+                if (!body.apiKey && !process.env.ANTHROPIC_API_KEY) {
+                    return new Response(JSON.stringify({ success: false, error: 'apiKey required (or set ANTHROPIC_API_KEY env var)' }), {
+                        status: 400,
+                        headers: { 'Content-Type': 'application/json', ...corsHeaders }
+                    });
+                }
+
+                // Stop existing agent if running
+                if (activeAgent?.isRunning) {
+                    await activeAgent.stop();
+                }
+
+                activeAgent = createAgent({
+                    botName: body.botName,
+                    apiKey: body.apiKey,
+                    model: body.model,
+                    goal: body.goal,
+                    gatewayPort: GATEWAY_PORT
+                });
+
+                await activeAgent.start();
+
+                return new Response(JSON.stringify({
+                    success: true,
+                    botName: body.botName,
+                    model: activeAgent.model,
+                    goal: body.goal || null
+                }), {
+                    headers: { 'Content-Type': 'application/json', ...corsHeaders }
+                });
+            } catch (e: any) {
+                return new Response(JSON.stringify({ success: false, error: e.message }), {
+                    status: 500,
+                    headers: { 'Content-Type': 'application/json', ...corsHeaders }
+                });
+            }
+        }
+
+        // Stop the agent
+        if (url.pathname === '/agent/stop' && req.method === 'POST') {
+            if (activeAgent?.isRunning) {
+                await activeAgent.stop();
+                return new Response(JSON.stringify({ success: true, message: 'Agent stopped' }), {
+                    headers: { 'Content-Type': 'application/json', ...corsHeaders }
+                });
+            }
+            return new Response(JSON.stringify({ success: false, error: 'No agent running' }), {
+                headers: { 'Content-Type': 'application/json', ...corsHeaders }
+            });
+        }
+
+        // Agent status
+        if (url.pathname === '/agent/status' && req.method === 'GET') {
+            if (activeAgent) {
+                return new Response(JSON.stringify(activeAgent.getStatus()), {
+                    headers: { 'Content-Type': 'application/json', ...corsHeaders }
+                });
+            }
+            return new Response(JSON.stringify({ running: false }), {
+                headers: { 'Content-Type': 'application/json', ...corsHeaders }
+            });
+        }
+
+        // Send chat message to agent
+        if (url.pathname === '/agent/chat' && req.method === 'POST') {
+            if (!activeAgent?.isRunning) {
+                return new Response(JSON.stringify({ success: false, error: 'No agent running' }), {
+                    headers: { 'Content-Type': 'application/json', ...corsHeaders }
+                });
+            }
+            try {
+                const body = await req.json() as { message: string };
+                if (!body.message) {
+                    return new Response(JSON.stringify({ success: false, error: 'message is required' }), {
+                        status: 400,
+                        headers: { 'Content-Type': 'application/json', ...corsHeaders }
+                    });
+                }
+                activeAgent.addChatMessage(body.message);
+                return new Response(JSON.stringify({ success: true }), {
+                    headers: { 'Content-Type': 'application/json', ...corsHeaders }
+                });
+            } catch (e: any) {
+                return new Response(JSON.stringify({ success: false, error: e.message }), {
+                    status: 400,
+                    headers: { 'Content-Type': 'application/json', ...corsHeaders }
+                });
+            }
+        }
+
+        // SSE stream for agent events
+        if (url.pathname === '/agent/stream' && req.method === 'GET') {
+            if (!activeAgent) {
+                return new Response(JSON.stringify({ error: 'No agent running' }), {
+                    status: 404,
+                    headers: { 'Content-Type': 'application/json', ...corsHeaders }
+                });
+            }
+
+            const agent = activeAgent;
+            const stream = new ReadableStream<Uint8Array>({
+                start(controller) {
+                    agent.addSSEClient(controller);
+                },
+                cancel(controller) {
+                    agent.removeSSEClient(controller);
+                }
+            });
+
+            return new Response(stream, {
+                headers: {
+                    'Content-Type': 'text/event-stream',
+                    'Cache-Control': 'no-cache',
+                    'Connection': 'keep-alive',
+                    ...corsHeaders
+                }
+            });
+        }
+
+        // Agent event history
+        if (url.pathname === '/agent/history' && req.method === 'GET') {
+            if (!activeAgent) {
+                return new Response(JSON.stringify({ history: [] }), {
+                    headers: { 'Content-Type': 'application/json', ...corsHeaders }
+                });
+            }
+            return new Response(JSON.stringify({ history: activeAgent.getHistory() }), {
+                headers: { 'Content-Type': 'application/json', ...corsHeaders }
+            });
+        }
+
         return new Response(`Gateway Service (port ${GATEWAY_PORT})
 
 Endpoints:
@@ -756,11 +912,17 @@ Endpoints:
 - POST /run-script         Run a script { botName, script }
 - POST /stop-script        Stop running script
 - GET /script-output       Get script output
+- POST /agent/start        Start AI agent { botName, apiKey, model?, goal? }
+- POST /agent/stop         Stop AI agent
+- GET  /agent/status       Agent status
+- POST /agent/chat         Send message to agent { message }
+- GET  /agent/stream       SSE event stream
+- GET  /agent/history      Agent event history
 
 WebSocket:
 - ws://localhost:${GATEWAY_PORT}    Bot/SDK connections
 
-Bots: ${botSessions.size} | SDKs: ${sdkSessions.size}
+Bots: ${botSessions.size} | SDKs: ${sdkSessions.size} | Agent: ${activeAgent?.isRunning ? 'running' : 'off'}
 `, {
             headers: { 'Content-Type': 'text/plain', ...corsHeaders }
         });

@@ -1,6 +1,6 @@
 import { createSignal, For, Show, onMount, onCleanup, createEffect } from "solid-js";
 
-const TABS = ["Status", "Inventory", "Nearby", "Scripts"] as const;
+const TABS = ["Status", "Inventory", "Nearby", "Scripts", "AI"] as const;
 type Tab = (typeof TABS)[number];
 
 export default function App() {
@@ -84,6 +84,9 @@ export default function App() {
 				</Show>
 				<Show when={activeTab() === "Scripts"}>
 					<ScriptsPanel />
+				</Show>
+				<Show when={activeTab() === "AI"}>
+					<AIPanel />
 				</Show>
 			</div>
 		</div>
@@ -407,6 +410,190 @@ function ScriptsPanel() {
 				<Show when={output().length === 0}>
 					<p class="placeholder-text">No output yet</p>
 				</Show>
+			</div>
+		</div>
+	);
+}
+
+// ============ AI Panel ============
+
+type AIMessage = { role: "user" | "assistant" | "tool" | "system"; text: string; toolName?: string };
+
+function AIPanel() {
+	const [messages, setMessages] = createSignal<AIMessage[]>([]);
+	const [input, setInput] = createSignal("");
+	const [goal, setGoal] = createSignal("");
+	const [running, setRunning] = createSignal(false);
+	const [agentStatus, setAgentStatus] = createSignal<"idle" | "thinking" | "acting" | "stopped">("idle");
+	const [apiKey, setApiKey] = createSignal("");
+	const [keySaved, setKeySaved] = createSignal(false);
+
+	const GW = "http://localhost:7780";
+	let messagesRef: HTMLDivElement | undefined;
+	let eventSource: EventSource | null = null;
+
+	function connectSSE() {
+		if (eventSource) eventSource.close();
+		eventSource = new EventSource(`${GW}/agent/stream`);
+		eventSource.onmessage = (event) => {
+			try {
+				const evt = JSON.parse(event.data);
+				const d = evt.data || {};
+				if (evt.type === "narration") {
+					setMessages((prev) => [...prev, { role: "assistant", text: d.text || "" }]);
+				} else if (evt.type === "action") {
+					const tool = d.tool || "action";
+					const input = d.input ? JSON.stringify(d.input).slice(0, 120) : "";
+					setMessages((prev) => [...prev, { role: "tool", text: input, toolName: tool }]);
+				} else if (evt.type === "action_result") {
+					const result = d.result ? `${d.result.success ? "OK" : "FAIL"}: ${d.result.message || ""}` : "";
+					if (result) setMessages((prev) => [...prev, { role: "tool", text: `> ${result}`, toolName: "result" }]);
+				} else if (evt.type === "thinking") {
+					setAgentStatus("thinking");
+				} else if (evt.type === "status") {
+					const s = (d.status || d.message || "") as string;
+					if (s === "thinking" || s === "acting" || s === "idle" || s === "stopped") setAgentStatus(s);
+					if (s === "stopped" || s === "idle") setRunning(false);
+					if (s === "thinking" || s === "acting") setRunning(true);
+				} else if (evt.type === "error") {
+					setMessages((prev) => [...prev, { role: "system", text: `Error: ${d.message || d.error || JSON.stringify(d)}` }]);
+				}
+			} catch (e) { console.error("SSE parse error:", e); }
+		};
+		eventSource.onerror = () => {
+			eventSource?.close();
+			eventSource = null;
+			setTimeout(connectSSE, 3000);
+		};
+	}
+
+	onMount(() => {
+		connectSSE();
+
+		// Check if key is already saved
+		fetch(`${GW}/agent/has-key`).then(r => r.json()).then(d => {
+			if (d.hasKey) setKeySaved(true);
+		}).catch(() => {});
+
+		const statusInterval = setInterval(async () => {
+			try {
+				const resp = await fetch(`${GW}/agent/status`);
+				const data = await resp.json();
+				if (data.running !== undefined) setRunning(data.running);
+				if (data.status) {
+					const s = data.status as string;
+					if (s === "thinking" || s === "acting" || s === "idle" || s === "stopped") {
+						setAgentStatus(s);
+					}
+				}
+			} catch {}
+		}, 2000);
+
+		onCleanup(() => {
+			clearInterval(statusInterval);
+			eventSource?.close();
+		});
+	});
+
+	createEffect(() => {
+		messages();
+		if (messagesRef) messagesRef.scrollTop = messagesRef.scrollHeight;
+	});
+
+	async function startAgent() {
+		try {
+			await fetch(`${GW}/agent/start`, {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ botName: "dexrunner", apiKey: apiKey(), goal: goal() }),
+			});
+			setRunning(true);
+			setAgentStatus("thinking");
+			setMessages((prev) => [...prev, { role: "system", text: `Goal: ${goal()}` }]);
+		} catch {}
+	}
+
+	async function stopAgent() {
+		try {
+			await fetch(`${GW}/agent/stop`, { method: "POST" });
+			setRunning(false);
+			setAgentStatus("stopped");
+		} catch {}
+	}
+
+	async function sendMessage() {
+		const msg = input().trim();
+		if (!msg) return;
+		setMessages((prev) => [...prev, { role: "user", text: msg }]);
+		setInput("");
+		try {
+			await fetch(`${GW}/agent/chat`, {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ message: msg }),
+			});
+		} catch {}
+	}
+
+	return (
+		<div class="ai-panel">
+			<div class="ai-config">
+				<Show when={!keySaved()} fallback={
+					<div class="ai-key-saved">API key saved</div>
+				}>
+					<input
+						type="password"
+						placeholder="Anthropic API Key (saved after first use)"
+						value={apiKey()}
+						onInput={(e) => setApiKey(e.currentTarget.value)}
+					/>
+				</Show>
+				<div class="ai-controls">
+					<input
+						class="ai-goal-input"
+						type="text"
+						placeholder="Goal for the agent..."
+						value={goal()}
+						onInput={(e) => setGoal(e.currentTarget.value)}
+						onKeyDown={(e) => { if (e.key === "Enter" && !running()) startAgent(); }}
+					/>
+					<Show
+						when={running()}
+						fallback={
+							<button class="ai-start-btn start" onClick={startAgent}>Start</button>
+						}
+					>
+						<button class="ai-start-btn stop" onClick={stopAgent}>Stop</button>
+					</Show>
+				</div>
+			</div>
+
+			<div class="ai-messages" ref={messagesRef}>
+				<Show when={messages().length === 0}>
+					<div class="ai-msg system">Set a goal and press Start to begin.</div>
+				</Show>
+				<For each={messages()}>
+					{(msg) => (
+						<div class={`ai-msg ${msg.role}`}>
+							<Show when={msg.role === "tool" && msg.toolName}>
+								<strong>{msg.toolName}: </strong>
+							</Show>
+							{msg.text}
+						</div>
+					)}
+				</For>
+			</div>
+
+			<div class="ai-input-bar">
+				<span class={`ai-status ${agentStatus()}`} title={agentStatus()} />
+				<input
+					type="text"
+					placeholder="Send a message..."
+					value={input()}
+					onInput={(e) => setInput(e.currentTarget.value)}
+					onKeyDown={(e) => { if (e.key === "Enter") sendMessage(); }}
+				/>
+				<button class="ai-send-btn" onClick={sendMessage}>Send</button>
 			</div>
 		</div>
 	);
