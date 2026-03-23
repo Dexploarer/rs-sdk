@@ -1,3 +1,4 @@
+import path from 'path';
 import { register } from 'prom-client';
 import Environment from '#/util/Environment.js';
 import World from '#/engine/World.js';
@@ -126,6 +127,25 @@ export async function startWeb() {
                         }
                     });
                 }
+            }
+
+            // RuneLight panel (serves built files from runelight/dist/)
+            if (url.pathname.startsWith('/runelight')) {
+                try {
+                    let relPath = url.pathname.substring('/runelight'.length);
+                    if (!relPath || relPath === '/') relPath = '/index.html';
+                    // Navigate from engine src/web/ → src/ → engine/ → server/ → repo root → runelight/dist/
+                    const filePath = `${import.meta.dir}/../../../../runelight/dist${relPath}`;
+                    const file = Bun.file(filePath);
+                    if (await file.exists()) {
+                        const ext = relPath.substring(relPath.lastIndexOf('.'));
+                        const mime: Record<string, string> = { '.html': 'text/html', '.js': 'application/javascript', '.css': 'text/css', '.wasm': 'application/wasm' };
+                        return new Response(file, { headers: { 'Content-Type': mime[ext] || 'application/octet-stream' } });
+                    }
+                } catch (e) {
+                    console.error('[RuneLight] Error serving panel:', e);
+                }
+                return new Response('Not found', { status: 404 });
             }
 
             // Client pages (/, /bot, /rs2.cgi)
