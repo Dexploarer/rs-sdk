@@ -11,7 +11,7 @@ import type {
     SDKConnectionMode
 } from './types';
 
-import { createAgent, Agent, hasApiKey, saveApiKeyExternal } from './agent';
+import { createAgent, Agent, hasApiKey, saveApiKeyExternal, startAnthropicOAuth, submitOAuthCode } from './agent';
 
 const GATEWAY_PORT = parseInt(process.env.AGENT_PORT || '7780');
 
@@ -822,6 +822,42 @@ const server = Bun.serve({
             return new Response(JSON.stringify({ hasKey: hasApiKey() }), {
                 headers: { 'Content-Type': 'application/json', ...corsHeaders }
             });
+        }
+
+        // Start Anthropic OAuth flow
+        if (url.pathname === '/agent/oauth/start' && req.method === 'POST') {
+            try {
+                const { authUrl } = await startAnthropicOAuth();
+                // Open the auth URL in system browser
+                Bun.spawn(['open', authUrl]);
+                return new Response(JSON.stringify({ success: true, authUrl }), {
+                    headers: { 'Content-Type': 'application/json', ...corsHeaders }
+                });
+            } catch (e: any) {
+                return new Response(JSON.stringify({ success: false, error: e.message }), {
+                    status: 500, headers: { 'Content-Type': 'application/json', ...corsHeaders }
+                });
+            }
+        }
+
+        // Submit OAuth authorization code
+        if (url.pathname === '/agent/oauth/code' && req.method === 'POST') {
+            try {
+                const body = await req.json() as { code: string };
+                if (!body.code) {
+                    return new Response(JSON.stringify({ success: false, error: 'code required' }), {
+                        status: 400, headers: { 'Content-Type': 'application/json', ...corsHeaders }
+                    });
+                }
+                submitOAuthCode(body.code);
+                return new Response(JSON.stringify({ success: true }), {
+                    headers: { 'Content-Type': 'application/json', ...corsHeaders }
+                });
+            } catch (e: any) {
+                return new Response(JSON.stringify({ success: false, error: e.message }), {
+                    status: 500, headers: { 'Content-Type': 'application/json', ...corsHeaders }
+                });
+            }
         }
 
         // Start the agent

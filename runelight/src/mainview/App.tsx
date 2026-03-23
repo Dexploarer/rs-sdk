@@ -535,19 +535,56 @@ function AIPanel() {
 		} catch {}
 	}
 
-	const [showPaste, setShowPaste] = createSignal(false);
+	const [oauthStep, setOauthStep] = createSignal<"idle" | "waiting_code" | "submitting">("idle");
+	const [oauthCode, setOauthCode] = createSignal("");
+	const [showManualKey, setShowManualKey] = createSignal(false);
 
-	async function openConsole() {
-		// Open in system browser via gateway (Electrobun webview can't open external URLs in Chrome)
-		await fetch(`${GW}/agent/open-url`, {
-			method: "POST",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({ url: "https://console.anthropic.com/settings/keys" }),
-		}).catch(() => {
-			// Fallback: try window.open
-			window.open("https://console.anthropic.com/settings/keys", "_blank");
-		});
-		setShowPaste(true);
+	async function startOAuth() {
+		try {
+			setOauthStep("waiting_code");
+			const resp = await fetch(`${GW}/agent/oauth/start`, { method: "POST" });
+			const data = await resp.json();
+			if (!data.success) {
+				setMessages((prev) => [...prev, { role: "system", text: `OAuth failed: ${data.error}` }]);
+				setOauthStep("idle");
+			}
+		} catch (e: any) {
+			setMessages((prev) => [...prev, { role: "system", text: `Error: ${e.message}` }]);
+			setOauthStep("idle");
+		}
+	}
+
+	async function submitOAuthCode() {
+		const code = oauthCode().trim();
+		if (!code) return;
+		setOauthStep("submitting");
+		try {
+			const resp = await fetch(`${GW}/agent/oauth/code`, {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ code }),
+			});
+			const data = await resp.json();
+			if (data.success) {
+				// Wait a moment for the OAuth flow to complete and save the key
+				setTimeout(async () => {
+					try {
+						const keyResp = await fetch(`${GW}/agent/has-key`);
+						const keyData = await keyResp.json();
+						if (keyData.hasKey) {
+							setKeySaved(true);
+						}
+					} catch {}
+				}, 2000);
+				setKeySaved(true);
+			} else {
+				setMessages((prev) => [...prev, { role: "system", text: `Failed: ${data.error}` }]);
+				setOauthStep("waiting_code");
+			}
+		} catch (e: any) {
+			setMessages((prev) => [...prev, { role: "system", text: `Error: ${e.message}` }]);
+			setOauthStep("waiting_code");
+		}
 	}
 
 	async function saveKey() {
@@ -576,14 +613,36 @@ function AIPanel() {
 				<Show when={!keySaved()}>
 					<div class="ai-setup">
 						<div class="ai-setup-title">Connect to Claude</div>
-						<Show when={!showPaste()}>
-							<p class="ai-setup-desc">Step 1: Get your API key from Anthropic</p>
-							<button class="ai-link-btn" onClick={openConsole}>
-								Get API Key
-							</button>
+						<Show when={!showManualKey()}>
+							<Show when={oauthStep() === "idle"}>
+								<p class="ai-setup-desc">Sign in with your Anthropic account</p>
+								<button class="ai-link-btn" onClick={startOAuth}>
+									Connect with Claude
+								</button>
+							</Show>
+							<Show when={oauthStep() === "waiting_code"}>
+								<p class="ai-setup-desc">Paste the authorization code from the browser</p>
+								<div class="ai-setup-row">
+									<input
+										type="text"
+										placeholder="Paste code here..."
+										value={oauthCode()}
+										onInput={(e) => setOauthCode(e.currentTarget.value)}
+										onKeyDown={(e) => { if (e.key === "Enter") submitOAuthCode(); }}
+										autofocus
+									/>
+									<button class="ai-start-btn start" onClick={submitOAuthCode}>Submit</button>
+								</div>
+							</Show>
+							<Show when={oauthStep() === "submitting"}>
+								<p class="ai-setup-desc">Connecting...</p>
+							</Show>
+							<p class="ai-setup-alt" onClick={() => setShowManualKey(true)}>
+								or enter API key manually
+							</p>
 						</Show>
-						<Show when={showPaste()}>
-							<p class="ai-setup-desc">Step 2: Paste your key below</p>
+						<Show when={showManualKey()}>
+							<p class="ai-setup-desc">Paste your API key below</p>
 							<div class="ai-setup-row">
 								<input
 									type="password"
@@ -595,6 +654,9 @@ function AIPanel() {
 								/>
 								<button class="ai-start-btn start" onClick={saveKey}>Save</button>
 							</div>
+							<p class="ai-setup-alt" onClick={() => setShowManualKey(false)}>
+								back to OAuth login
+							</p>
 						</Show>
 					</div>
 				</Show>

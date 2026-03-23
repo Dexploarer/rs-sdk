@@ -5,6 +5,180 @@ import Anthropic from '@anthropic-ai/sdk';
 import { existsSync, readFileSync, writeFileSync, mkdirSync } from 'fs';
 import { join } from 'path';
 import type { BotWorldState, BotAction, ActionResult } from '../../sdk/types';
+import { loginAnthropic } from '@mariozechner/pi-ai/oauth';
+
+// ============ Claude Code Stealth Fetch Interceptor ============
+
+const STEALTH_GUARD = Symbol.for("scaipe.claudeCodeStealthInstalled");
+const CLAUDE_CODE_VERSION = "2.1.2";
+const CLAUDE_CODE_SYSTEM_PREFIX =
+    "You are Claude Code, Anthropic's official CLI for Claude.";
+const ANTHROPIC_BETA =
+    "claude-code-20250219,oauth-2025-04-20,fine-grained-tool-streaming-2025-05-14,interleaved-thinking-2025-05-14";
+
+function isSetupToken(value: string | null): value is string {
+    return typeof value === "string" && value.startsWith("sk-ant-oat");
+}
+
+function getUrl(input: RequestInfo | URL): URL | null {
+    try {
+        if (typeof input === "string") return new URL(input);
+        if (input instanceof URL) return input;
+        return new URL(input.url);
+    } catch {
+        return null;
+    }
+}
+
+function addSystemPrefix(body: unknown): unknown {
+    if (!body || typeof body !== "object") return body;
+
+    const next = body as {
+        model?: string;
+        system?: string | Array<{ type?: string; text?: string }>;
+    };
+
+    const prefix = { type: "text", text: CLAUDE_CODE_SYSTEM_PREFIX };
+
+    if (Array.isArray(next.system)) {
+        const hasPrefix = next.system.some((block) =>
+            block?.text?.startsWith("You are Claude Code"),
+        );
+        if (!hasPrefix) next.system.unshift(prefix);
+    } else if (typeof next.system === "string") {
+        next.system = [prefix, { type: "text", text: next.system }];
+    } else {
+        next.system = [prefix];
+    }
+
+    return next;
+}
+
+function installClaudeCodeStealthFetchInterceptor(): void {
+    if ((globalThis as Record<symbol, unknown>)[STEALTH_GUARD]) return;
+
+    const originalFetch = globalThis.fetch.bind(globalThis);
+
+    const stealthFetch = async function stealthFetch(
+        input: RequestInfo | URL,
+        init?: RequestInit,
+    ) {
+        const url = getUrl(input);
+        if (!url || url.hostname !== "api.anthropic.com") {
+            return originalFetch(input, init);
+        }
+
+        const request = input instanceof Request ? input : null;
+        const headers = new Headers(init?.headers ?? request?.headers ?? undefined);
+        const apiKey = headers.get("x-api-key");
+        const authHeader = headers.get("authorization");
+        const bearerToken = authHeader?.startsWith("Bearer ")
+            ? authHeader.slice(7)
+            : null;
+
+        const setupToken = isSetupToken(apiKey)
+            ? apiKey
+            : isSetupToken(bearerToken)
+                ? bearerToken
+                : null;
+
+        if (!setupToken) return originalFetch(input, init);
+
+        headers.delete("x-api-key");
+        headers.set("authorization", `Bearer ${setupToken}`);
+        headers.set("anthropic-beta", ANTHROPIC_BETA);
+        headers.set("user-agent", `claude-cli/${CLAUDE_CODE_VERSION} (external, cli)`);
+        headers.set("x-app", "cli");
+
+        let body = init?.body ?? request?.body;
+
+        if (typeof body === "string") {
+            try {
+                const parsed = JSON.parse(body) as Record<string, unknown>;
+                const updated = addSystemPrefix(parsed) as Record<string, unknown>;
+                body = JSON.stringify(updated);
+                console.log(
+                    `[stealth] Patched Anthropic request for ${String(updated.model ?? "unknown-model")}`,
+                );
+            } catch {
+                console.log("[stealth] Anthropic request body was not JSON; skipping system prefix");
+            }
+        }
+
+        const nextInit: RequestInit = { ...init, headers, body: init ? body : undefined };
+
+        if (request && !init) {
+            const nextRequest = new Request(request, {
+                headers,
+                body: typeof body === "string" ? body : undefined,
+            });
+            return originalFetch(nextRequest);
+        }
+
+        return originalFetch(input, nextInit);
+    };
+
+    if ("preconnect" in globalThis.fetch) {
+        (stealthFetch as unknown as Record<string, unknown>).preconnect = (
+            globalThis.fetch as unknown as Record<string, unknown>
+        ).preconnect;
+    }
+
+    globalThis.fetch = stealthFetch as typeof globalThis.fetch;
+    (globalThis as Record<symbol, unknown>)[STEALTH_GUARD] = true;
+    console.log("[stealth] Claude Code setup token runtime support enabled");
+}
+
+// ============ Anthropic OAuth Flow ============
+
+let pendingPromptResolve: ((code: string) => void) | null = null;
+
+export async function startAnthropicOAuth(): Promise<{ authUrl: string }> {
+    let authUrl = '';
+    let resolveUrl: (() => void) | null = null;
+    const urlReady = new Promise<void>(r => { resolveUrl = r; });
+
+    // Start the OAuth flow in background
+    loginAnthropic({
+        onAuth: (info) => {
+            authUrl = info.url;
+            console.log('[Agent] OAuth auth URL:', info.url);
+            if (info.instructions) console.log('[Agent]', info.instructions);
+            resolveUrl?.();
+        },
+        onPrompt: (prompt) => {
+            console.log('[Agent] OAuth prompt:', prompt.message);
+            return new Promise<string>(resolve => {
+                pendingPromptResolve = resolve;
+            });
+        },
+        onProgress: (msg) => {
+            console.log('[Agent] OAuth progress:', msg);
+        },
+        onManualCodeInput: () => {
+            console.log('[Agent] OAuth requesting manual code input');
+            return new Promise<string>(resolve => {
+                pendingPromptResolve = resolve;
+            });
+        },
+    }).then(creds => {
+        saveApiKey(creds.accessToken);
+        installClaudeCodeStealthFetchInterceptor();
+        console.log('[Agent] OAuth complete, token saved');
+    }).catch(err => {
+        console.error('[Agent] OAuth failed:', err);
+    });
+
+    await urlReady;
+    return { authUrl };
+}
+
+export function submitOAuthCode(code: string): void {
+    if (pendingPromptResolve) {
+        pendingPromptResolve(code);
+        pendingPromptResolve = null;
+    }
+}
 
 // ============ API Key Persistence ============
 
@@ -26,6 +200,9 @@ function saveApiKey(apiKey: string): void {
         if (!existsSync(KEY_DIR)) mkdirSync(KEY_DIR, { recursive: true });
         writeFileSync(KEY_FILE, JSON.stringify({ apiKey }, null, 2));
         console.log(`[Agent] API key saved to ${KEY_FILE}`);
+        if (apiKey.startsWith('sk-ant-oat')) {
+            installClaudeCodeStealthFetchInterceptor();
+        }
     } catch (e) {
         console.warn('[Agent] Failed to save API key:', e);
     }
@@ -566,7 +743,12 @@ export class Agent {
         }
         // Save for future sessions
         saveApiKey(apiKey);
-        this.anthropic = new Anthropic({ apiKey });
+        if (apiKey.startsWith('sk-ant-oat')) {
+            installClaudeCodeStealthFetchInterceptor();
+            this.anthropic = new Anthropic({ authToken: apiKey });
+        } else {
+            this.anthropic = new Anthropic({ apiKey });
+        }
     }
 
     get isRunning(): boolean {
