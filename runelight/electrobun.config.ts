@@ -2,8 +2,8 @@ import type { ElectrobunConfig } from "electrobun";
 
 export default {
 	app: {
-		name: "RuneLight",
-		identifier: "com.runelight.app",
+		name: "scAIpe",
+		identifier: "com.scaipe.app",
 		version: "0.1.0",
 	},
 	build: {

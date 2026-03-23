@@ -55,7 +55,7 @@ export default function App() {
 	return (
 		<div class="panel-root">
 			<div class="panel-header">
-				<span class="panel-title">RuneLight</span>
+				<span class="panel-title">scAIpe</span>
 				<span class={`status-dot ${connected() ? "online" : "offline"}`} />
 			</div>
 
@@ -157,7 +157,7 @@ async function initItemViewer() {
 		itemViewer = new module.ItemViewer();
 		await itemViewer.init("");
 		viewerReady = true;
-		console.log("[RuneLight] ItemViewer ready - rendering icons");
+		console.log("[scAIpe] ItemViewer ready - rendering icons");
 		// Trigger re-render of all existing canvases
 		document.querySelectorAll("canvas.item-canvas").forEach((c) => {
 			const id = parseInt(c.getAttribute("data-item-id") || "0");
@@ -166,7 +166,7 @@ async function initItemViewer() {
 		});
 	} catch (e: any) {
 		viewerError = e.message;
-		console.error("[RuneLight] ItemViewer failed:", e);
+		console.error("[scAIpe] ItemViewer failed:", e);
 	}
 }
 

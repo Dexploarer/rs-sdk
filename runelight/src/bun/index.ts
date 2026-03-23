@@ -7,14 +7,14 @@ async function waitForServer(name: string, url: string, maxAttempts: number, int
 		try {
 			const resp = await fetch(url, { method: "HEAD" });
 			if (resp.ok) {
-				console.log(`[RuneLight] ${name} ready`);
+				console.log(`[scAIpe] ${name} ready`);
 				return true;
 			}
 		} catch {}
-		if (i === 0) console.log(`[RuneLight] Waiting for ${name}...`);
+		if (i === 0) console.log(`[scAIpe] Waiting for ${name}...`);
 		await Bun.sleep(intervalMs);
 	}
-	console.log(`[RuneLight] WARNING: ${name} not detected`);
+	console.log(`[scAIpe] WARNING: ${name} not detected`);
 	return false;
 }
 
@@ -38,9 +38,9 @@ let panelVisible = true;
 
 ApplicationMenu.setApplicationMenu([
 	{
-		label: "RuneLight",
+		label: "scAIpe",
 		submenu: [
-			{ label: "About RuneLight", action: "about" },
+			{ label: "About scAIpe", action: "about" },
 			{ type: "separator" },
 			{ role: "quit" },
 		],
@@ -90,7 +90,7 @@ ApplicationMenu.on("application-menu-clicked", (event: any) => {
 
 	switch (action) {
 		case "about":
-			console.log("[RuneLight] v0.1.0 — RS-SDK Desktop Client");
+			console.log("[scAIpe] v0.1.0 — RS-SDK Desktop Client");
 			break;
 		case "reconnect":
 			gameView?.loadURL("http://localhost:8888/bot?bot=dexrunner&password=F6sBxF2QkpBB&minimal");
@@ -129,7 +129,7 @@ const tray = new Tray({
 });
 
 tray.setMenu([
-	{ type: "normal", label: "Show RuneLight", action: "show" },
+	{ type: "normal", label: "Show scAIpe", action: "show" },
 	{ type: "normal", label: "Run Script", action: "tray-run" },
 	{ type: "normal", label: "Stop Script", action: "tray-stop" },
 	{ type: "divider" },
@@ -163,7 +163,7 @@ tray.on("tray-clicked", (event: any) => {
 // ============ Create Window ============
 
 const mainWindow = new BrowserWindow({
-	title: "RuneLight",
+	title: "scAIpe",
 	url: PANEL_URL,
 	frame: {
 		width: WIN_WIDTH,
@@ -202,5 +202,5 @@ const panelView = new BrowserView({
 	autoResize: false,
 });
 
-console.log("[RuneLight] App ready!");
-console.log("[RuneLight] Shortcuts: Cmd+\\ toggle panel, Cmd+Enter run script, Cmd+. stop script");
+console.log("[scAIpe] App ready!");
+console.log("[scAIpe] Shortcuts: Cmd+\\ toggle panel, Cmd+Enter run script, Cmd+. stop script");

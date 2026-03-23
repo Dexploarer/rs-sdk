@@ -1,8 +1,8 @@
 {
-	"name": "runelight",
+	"name": "scaipe",
 	"version": "0.1.0",
 	"type": "module",
-	"description": "RuneLight — RS-SDK Desktop Client",
+	"description": "scAIpe — RS-SDK Desktop Client",
 	"scripts": {
 		"start": "vite build && concurrently --kill-others \"bun run server:engine\" \"bun run server:gateway\" \"bun run server:webclient\" \"bun run app\"",
 		"app": "electrobun dev",
