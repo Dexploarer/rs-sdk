@@ -995,3 +995,7 @@ export function createAgent(config: AgentConfig): Agent {
 export function hasApiKey(): boolean {
     return !!(loadSavedApiKey() || process.env.ANTHROPIC_API_KEY);
 }
+
+export function saveApiKeyExternal(apiKey: string): void {
+    saveApiKey(apiKey);
+}

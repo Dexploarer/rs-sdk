@@ -535,42 +535,72 @@ function AIPanel() {
 		} catch {}
 	}
 
+	async function saveKey() {
+		const key = apiKey().trim();
+		if (!key) return;
+		try {
+			// Save by starting and immediately stopping — the agent saves the key on construction
+			const resp = await fetch(`${GW}/agent/save-key`, {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ apiKey: key }),
+			});
+			const data = await resp.json();
+			if (data.success) {
+				setKeySaved(true);
+				setMessages((prev) => [...prev, { role: "system", text: "API key saved. Set a goal and press Start." }]);
+			} else {
+				setMessages((prev) => [...prev, { role: "system", text: `Failed: ${data.error}` }]);
+			}
+		} catch (e: any) {
+			setMessages((prev) => [...prev, { role: "system", text: `Error saving key: ${e.message}` }]);
+		}
+	}
+
 	return (
 		<div class="ai-panel">
 			<div class="ai-config">
-				<Show when={!keySaved()} fallback={
-					<div class="ai-key-saved">API key saved</div>
-				}>
-					<input
-						type="password"
-						placeholder="Anthropic API Key (saved after first use)"
-						value={apiKey()}
-						onInput={(e) => setApiKey(e.currentTarget.value)}
-					/>
+				<Show when={!keySaved()}>
+					<div class="ai-setup">
+						<div class="ai-setup-title">Setup API Key</div>
+						<p class="ai-setup-desc">Enter your Anthropic API key. It will be saved locally and never shared.</p>
+						<div class="ai-setup-row">
+							<input
+								type="password"
+								placeholder="sk-ant-..."
+								value={apiKey()}
+								onInput={(e) => setApiKey(e.currentTarget.value)}
+								onKeyDown={(e) => { if (e.key === "Enter") saveKey(); }}
+							/>
+							<button class="ai-start-btn start" onClick={saveKey}>Save</button>
+						</div>
+					</div>
 				</Show>
-				<div class="ai-controls">
-					<input
-						class="ai-goal-input"
-						type="text"
-						placeholder="Goal for the agent..."
-						value={goal()}
-						onInput={(e) => setGoal(e.currentTarget.value)}
-						onKeyDown={(e) => { if (e.key === "Enter" && !running()) startAgent(); }}
-					/>
-					<Show
-						when={running()}
-						fallback={
-							<button class="ai-start-btn start" onClick={startAgent}>Start</button>
-						}
-					>
-						<button class="ai-start-btn stop" onClick={stopAgent}>Stop</button>
-					</Show>
-				</div>
+				<Show when={keySaved()}>
+					<div class="ai-controls">
+						<input
+							class="ai-goal-input"
+							type="text"
+							placeholder="Goal for the agent..."
+							value={goal()}
+							onInput={(e) => setGoal(e.currentTarget.value)}
+							onKeyDown={(e) => { if (e.key === "Enter" && !running()) startAgent(); }}
+						/>
+						<Show
+							when={running()}
+							fallback={
+								<button class="ai-start-btn start" onClick={startAgent}>Start</button>
+							}
+						>
+							<button class="ai-start-btn stop" onClick={stopAgent}>Stop</button>
+						</Show>
+					</div>
+				</Show>
 			</div>
 
 			<div class="ai-messages" ref={messagesRef}>
-				<Show when={messages().length === 0}>
-					<div class="ai-msg system">Set a goal and press Start to begin.</div>
+				<Show when={messages().length === 0 && keySaved()}>
+					<div class="ai-msg system">Set a goal and press Start.</div>
 				</Show>
 				<For each={messages()}>
 					{(msg) => (

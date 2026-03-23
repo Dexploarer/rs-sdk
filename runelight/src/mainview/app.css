@@ -331,7 +331,11 @@ html, body, #app {
 .ai-config { padding: 8px; border-bottom: 1px solid var(--border); }
 .ai-config input { width: 100%; padding: 5px 8px; background: var(--bg-input); border: 1px solid var(--border); border-radius: 4px; color: var(--text-bright); font-size: 11px; margin-bottom: 4px; outline: none; }
 .ai-config input:focus { border-color: var(--accent); }
-.ai-key-saved { font-size: 10px; color: var(--green); margin-bottom: 4px; }
+.ai-setup { padding: 4px 0; }
+.ai-setup-title { font-size: 13px; font-weight: 700; color: var(--accent); margin-bottom: 4px; }
+.ai-setup-desc { font-size: 11px; color: var(--text-dim); margin-bottom: 8px; line-height: 1.4; }
+.ai-setup-row { display: flex; gap: 4px; }
+.ai-setup-row input { flex: 1; }
 .ai-controls { display: flex; gap: 4px; }
 .ai-goal-input { flex: 1; }
 .ai-start-btn { padding: 5px 12px; border: none; border-radius: 4px; font-weight: 600; font-size: 10px; cursor: pointer; text-transform: uppercase; }

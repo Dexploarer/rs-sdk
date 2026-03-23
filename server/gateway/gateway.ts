@@ -11,7 +11,7 @@ import type {
     SDKConnectionMode
 } from './types';
 
-import { createAgent, Agent, hasApiKey } from './agent';
+import { createAgent, Agent, hasApiKey, saveApiKeyExternal } from './agent';
 
 const GATEWAY_PORT = parseInt(process.env.AGENT_PORT || '7780');
 
@@ -753,6 +753,26 @@ const server = Bun.serve({
         }
 
         // ============ Agent API ============
+
+        // Save API key
+        if (url.pathname === '/agent/save-key' && req.method === 'POST') {
+            try {
+                const body = await req.json() as { apiKey: string };
+                if (!body.apiKey || !body.apiKey.startsWith('sk-')) {
+                    return new Response(JSON.stringify({ success: false, error: 'Invalid API key format' }), {
+                        status: 400, headers: { 'Content-Type': 'application/json', ...corsHeaders }
+                    });
+                }
+                saveApiKeyExternal(body.apiKey);
+                return new Response(JSON.stringify({ success: true }), {
+                    headers: { 'Content-Type': 'application/json', ...corsHeaders }
+                });
+            } catch (e: any) {
+                return new Response(JSON.stringify({ success: false, error: e.message }), {
+                    status: 500, headers: { 'Content-Type': 'application/json', ...corsHeaders }
+                });
+            }
+        }
 
         // Check if API key is saved
         if (url.pathname === '/agent/has-key' && req.method === 'GET') {
