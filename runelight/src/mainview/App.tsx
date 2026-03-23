@@ -563,7 +563,15 @@ function AIPanel() {
 				<Show when={!keySaved()}>
 					<div class="ai-setup">
 						<div class="ai-setup-title">Setup API Key</div>
-						<p class="ai-setup-desc">Enter your Anthropic API key. It will be saved locally and never shared.</p>
+						<p class="ai-setup-desc">
+							Get your key from the Anthropic Console, paste it below.
+						</p>
+						<button
+							class="ai-link-btn"
+							onClick={() => window.open("https://console.anthropic.com/settings/keys", "_blank")}
+						>
+							Open Anthropic Console
+						</button>
 						<div class="ai-setup-row">
 							<input
 								type="password"
