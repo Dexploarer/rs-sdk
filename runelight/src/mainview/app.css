@@ -247,3 +247,81 @@ html, body, #app {
 .tab-content::-webkit-scrollbar-thumb:hover {
 	background: #555;
 }
+
+/* Script Runner */
+.script-controls {
+	display: flex;
+	gap: 6px;
+	margin-bottom: 8px;
+}
+
+.script-select {
+	flex: 1;
+	padding: 6px 8px;
+	background: var(--bg-input);
+	border: 1px solid var(--border);
+	border-radius: 4px;
+	color: var(--text-bright);
+	font-size: 12px;
+	outline: none;
+}
+
+.script-select:focus {
+	border-color: var(--accent);
+}
+
+.script-btn {
+	padding: 6px 14px;
+	border: none;
+	border-radius: 4px;
+	font-weight: 600;
+	font-size: 11px;
+	cursor: pointer;
+	text-transform: uppercase;
+}
+
+.script-btn.run {
+	background: var(--green);
+	color: #fff;
+}
+
+.script-btn.stop {
+	background: var(--red);
+	color: #fff;
+}
+
+.script-btn:hover {
+	filter: brightness(1.1);
+}
+
+.script-status {
+	font-size: 11px;
+	color: var(--green);
+	margin-bottom: 6px;
+}
+
+.script-output {
+	background: #111;
+	border: 1px solid var(--border);
+	border-radius: 4px;
+	padding: 6px;
+	max-height: 300px;
+	overflow-y: auto;
+	font-family: "SF Mono", "Fira Code", monospace;
+	font-size: 10px;
+	line-height: 1.4;
+}
+
+.output-line {
+	color: #0f0;
+	word-break: break-all;
+}
+
+.script-output::-webkit-scrollbar {
+	width: 4px;
+}
+
+.script-output::-webkit-scrollbar-thumb {
+	background: var(--border);
+	border-radius: 2px;
+}

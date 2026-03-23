@@ -306,10 +306,108 @@ function NearbyPanel(props: { state: any }) {
 // ============ Scripts Panel ============
 
 function ScriptsPanel() {
+	const [scripts, setScripts] = createSignal<string[]>([]);
+	const [selected, setSelected] = createSignal("");
+	const [running, setRunning] = createSignal(false);
+	const [runningName, setRunningName] = createSignal("");
+	const [output, setOutput] = createSignal<string[]>([]);
+
+	const GW = "http://localhost:7780";
+
+	onMount(async () => {
+		try {
+			const resp = await fetch(`${GW}/scripts/dexrunner`);
+			const data = await resp.json();
+			setScripts(data.scripts || []);
+			if (data.scripts?.length) setSelected(data.scripts[0]);
+		} catch {}
+
+		// Poll for output
+		const interval = setInterval(async () => {
+			try {
+				const resp = await fetch(`${GW}/script-output`);
+				const data = await resp.json();
+				setRunning(data.running);
+				setRunningName(data.script || "");
+				setOutput(data.output || []);
+			} catch {}
+		}, 1000);
+
+		onCleanup(() => clearInterval(interval));
+	});
+
+	async function runScript() {
+		const script = selected();
+		if (!script) return;
+		try {
+			await fetch(`${GW}/run-script`, {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ botName: "dexrunner", script }),
+			});
+			setRunning(true);
+			setRunningName(script);
+			setOutput([]);
+		} catch {}
+	}
+
+	async function stopScript() {
+		try {
+			await fetch(`${GW}/stop-script`, { method: "POST" });
+			setRunning(false);
+			setRunningName("");
+		} catch {}
+	}
+
+	let outputRef: HTMLDivElement | undefined;
+
+	createEffect(() => {
+		output(); // track
+		if (outputRef) outputRef.scrollTop = outputRef.scrollHeight;
+	});
+
 	return (
 		<div class="panel-section">
 			<h3>Bot Scripts</h3>
-			<p class="placeholder-text">Script runner coming soon</p>
+
+			<div class="script-controls">
+				<select
+					class="script-select"
+					value={selected()}
+					onChange={(e) => setSelected(e.currentTarget.value)}
+				>
+					<For each={scripts()}>
+						{(s) => <option value={s}>{s.replace(".ts", "")}</option>}
+					</For>
+				</select>
+				<Show
+					when={running()}
+					fallback={
+						<button class="script-btn run" onClick={runScript}>
+							Run
+						</button>
+					}
+				>
+					<button class="script-btn stop" onClick={stopScript}>
+						Stop
+					</button>
+				</Show>
+			</div>
+
+			<Show when={running()}>
+				<div class="script-status">
+					Running: <strong>{runningName()}</strong>
+				</div>
+			</Show>
+
+			<div class="script-output" ref={outputRef}>
+				<For each={output()}>
+					{(line) => <div class="output-line">{line}</div>}
+				</For>
+				<Show when={output().length === 0}>
+					<p class="placeholder-text">No output yet</p>
+				</Show>
+			</div>
 		</div>
 	);
 }

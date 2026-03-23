@@ -13,6 +13,11 @@ import type {
 
 const GATEWAY_PORT = parseInt(process.env.AGENT_PORT || '7780');
 
+// Script runner state (for RuneLight)
+let activeScript: any = null;
+let activeScriptName: string | null = null;
+let scriptOutput: string[] = [];
+
 // Login server configuration - when enabled, SDK connections require per-bot authentication
 const LOGIN_SERVER_ENABLED = process.env.LOGIN_SERVER === 'true';
 const LOGIN_HOST = process.env.LOGIN_HOST || 'localhost';
@@ -557,7 +562,7 @@ console.log(`[Gateway] Starting Gateway Service on port ${GATEWAY_PORT}...`);
 const server = Bun.serve({
     port: GATEWAY_PORT,
 
-    fetch(req, server) {
+    async fetch(req, server) {
         const url = new URL(req.url);
 
         // WebSocket upgrade
@@ -570,7 +575,7 @@ const server = Bun.serve({
         // CORS headers
         const corsHeaders = {
             'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'GET, OPTIONS',
+            'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
             'Access-Control-Allow-Headers': 'Content-Type'
         };
 
@@ -641,11 +646,116 @@ const server = Bun.serve({
             });
         }
 
+        // ============ Script Runner API (for RuneLight) ============
+
+        // List scripts for a bot
+        const scriptListMatch = url.pathname.match(/^\/scripts\/(.+)$/);
+        if (scriptListMatch && req.method === 'GET') {
+            const botName = decodeURIComponent(scriptListMatch[1]);
+            const botsDir = new URL(`../../bots/${botName}`, import.meta.url).pathname;
+            try {
+                const fs = await import('fs');
+                const entries = fs.readdirSync(botsDir);
+                const scripts = entries.filter((f: string) => f.endsWith('.ts'));
+                return new Response(JSON.stringify({ scripts: scripts.sort() }), {
+                    headers: { 'Content-Type': 'application/json', ...corsHeaders }
+                });
+            } catch {
+                return new Response(JSON.stringify({ scripts: [], error: 'Bot not found' }), {
+                    headers: { 'Content-Type': 'application/json', ...corsHeaders }
+                });
+            }
+        }
+
+        // Run a script
+        if (url.pathname === '/run-script' && req.method === 'POST') {
+            const body = await req.json() as { botName: string; script: string };
+            const scriptPath = new URL(`../../bots/${body.botName}/${body.script}`, import.meta.url).pathname;
+
+            // Kill existing script if running
+            if (activeScript) {
+                activeScript.kill();
+                activeScript = null;
+            }
+
+            try {
+                const proc = Bun.spawn(['bun', scriptPath], {
+                    cwd: new URL(`../../bots/${body.botName}`, import.meta.url).pathname,
+                    stdout: 'pipe',
+                    stderr: 'pipe',
+                    env: { ...process.env, PATH: process.env.PATH },
+                });
+                activeScript = proc;
+                activeScriptName = body.script;
+
+                // Collect output
+                scriptOutput = [];
+                if (proc.stdout) {
+                    const reader = proc.stdout.getReader();
+                    (async () => {
+                        while (true) {
+                            const { done, value } = await reader.read();
+                            if (done) break;
+                            const lines = new TextDecoder().decode(value).split('\n').filter(Boolean);
+                            for (const line of lines) {
+                                scriptOutput.push(line);
+                                if (scriptOutput.length > 200) scriptOutput.shift();
+                            }
+                        }
+                        // Script finished
+                        if (activeScript === proc) {
+                            activeScript = null;
+                            activeScriptName = null;
+                        }
+                    })();
+                }
+
+                return new Response(JSON.stringify({ success: true, script: body.script }), {
+                    headers: { 'Content-Type': 'application/json', ...corsHeaders }
+                });
+            } catch (e: any) {
+                return new Response(JSON.stringify({ success: false, error: e.message }), {
+                    headers: { 'Content-Type': 'application/json', ...corsHeaders }
+                });
+            }
+        }
+
+        // Stop running script
+        if (url.pathname === '/stop-script' && req.method === 'POST') {
+            if (activeScript) {
+                activeScript.kill();
+                activeScript = null;
+                const name = activeScriptName;
+                activeScriptName = null;
+                return new Response(JSON.stringify({ success: true, stopped: name }), {
+                    headers: { 'Content-Type': 'application/json', ...corsHeaders }
+                });
+            }
+            return new Response(JSON.stringify({ success: false, error: 'No script running' }), {
+                headers: { 'Content-Type': 'application/json', ...corsHeaders }
+            });
+        }
+
+        // Get script output
+        if (url.pathname === '/script-output' && req.method === 'GET') {
+            return new Response(JSON.stringify({
+                running: activeScript !== null,
+                script: activeScriptName,
+                output: scriptOutput.slice(-50),
+            }), {
+                headers: { 'Content-Type': 'application/json', ...corsHeaders }
+            });
+        }
+
         return new Response(`Gateway Service (port ${GATEWAY_PORT})
 
 Endpoints:
 - GET /status              All connections status
 - GET /status/:username    Per-bot status (controllers, observers)
+- GET /scripts/:botName    List bot scripts
+- POST /run-script         Run a script { botName, script }
+- POST /stop-script        Stop running script
+- GET /script-output       Get script output
 
 WebSocket:
 - ws://localhost:${GATEWAY_PORT}    Bot/SDK connections
