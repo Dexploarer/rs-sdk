@@ -774,6 +774,27 @@ const server = Bun.serve({
             }
         }
 
+        // Open URL in system browser
+        if (url.pathname === '/agent/open-url' && req.method === 'POST') {
+            try {
+                const body = await req.json() as { url: string };
+                if (!body.url) {
+                    return new Response(JSON.stringify({ success: false, error: 'url required' }), {
+                        status: 400, headers: { 'Content-Type': 'application/json', ...corsHeaders }
+                    });
+                }
+                // Use macOS 'open' command to open in default browser
+                Bun.spawn(['open', body.url]);
+                return new Response(JSON.stringify({ success: true }), {
+                    headers: { 'Content-Type': 'application/json', ...corsHeaders }
+                });
+            } catch (e: any) {
+                return new Response(JSON.stringify({ success: false, error: e.message }), {
+                    status: 500, headers: { 'Content-Type': 'application/json', ...corsHeaders }
+                });
+            }
+        }
+
         // Run claude setup-token CLI
         if (url.pathname === '/agent/setup-token' && req.method === 'POST') {
             try {

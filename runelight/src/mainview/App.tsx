@@ -535,20 +535,19 @@ function AIPanel() {
 		} catch {}
 	}
 
-	async function setupToken() {
-		setMessages((prev) => [...prev, { role: "system", text: "Running setup-token... Check your terminal/browser." }]);
-		try {
-			const resp = await fetch(`${GW}/agent/setup-token`, { method: "POST" });
-			const data = await resp.json();
-			if (data.success || data.hasKey) {
-				setKeySaved(true);
-				setMessages((prev) => [...prev, { role: "system", text: "Token saved. Set a goal and press Start." }]);
-			} else {
-				setMessages((prev) => [...prev, { role: "system", text: `Setup failed: ${data.error || "unknown"}` }]);
-			}
-		} catch (e: any) {
-			setMessages((prev) => [...prev, { role: "system", text: `Error: ${e.message}` }]);
-		}
+	const [showPaste, setShowPaste] = createSignal(false);
+
+	async function openConsole() {
+		// Open in system browser via gateway (Electrobun webview can't open external URLs in Chrome)
+		await fetch(`${GW}/agent/open-url`, {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({ url: "https://console.anthropic.com/settings/keys" }),
+		}).catch(() => {
+			// Fallback: try window.open
+			window.open("https://console.anthropic.com/settings/keys", "_blank");
+		});
+		setShowPaste(true);
 	}
 
 	async function saveKey() {
@@ -563,7 +562,6 @@ function AIPanel() {
 			const data = await resp.json();
 			if (data.success) {
 				setKeySaved(true);
-				setMessages((prev) => [...prev, { role: "system", text: "Key saved. Set a goal and press Start." }]);
 			} else {
 				setMessages((prev) => [...prev, { role: "system", text: `Failed: ${data.error}` }]);
 			}
@@ -578,20 +576,26 @@ function AIPanel() {
 				<Show when={!keySaved()}>
 					<div class="ai-setup">
 						<div class="ai-setup-title">Connect to Claude</div>
-						<button class="ai-link-btn" onClick={setupToken}>
-							Setup Token
-						</button>
-						<p class="ai-setup-desc">Or paste a key manually:</p>
-						<div class="ai-setup-row">
-							<input
-								type="password"
-								placeholder="sk-ant-..."
-								value={apiKey()}
-								onInput={(e) => setApiKey(e.currentTarget.value)}
-								onKeyDown={(e) => { if (e.key === "Enter") saveKey(); }}
-							/>
-							<button class="ai-start-btn start" onClick={saveKey}>Save</button>
-						</div>
+						<Show when={!showPaste()}>
+							<p class="ai-setup-desc">Step 1: Get your API key from Anthropic</p>
+							<button class="ai-link-btn" onClick={openConsole}>
+								Get API Key
+							</button>
+						</Show>
+						<Show when={showPaste()}>
+							<p class="ai-setup-desc">Step 2: Paste your key below</p>
+							<div class="ai-setup-row">
+								<input
+									type="password"
+									placeholder="sk-ant-..."
+									value={apiKey()}
+									onInput={(e) => setApiKey(e.currentTarget.value)}
+									onKeyDown={(e) => { if (e.key === "Enter") saveKey(); }}
+									autofocus
+								/>
+								<button class="ai-start-btn start" onClick={saveKey}>Save</button>
+							</div>
+						</Show>
 					</div>
 				</Show>
 				<Show when={keySaved()}>
