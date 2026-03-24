@@ -1,0 +1,11 @@
+{
+  "name": "scaipe-memory-module",
+  "type": "module",
+  "dependencies": {
+    "spacetimedb": "^2.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^6.0.0",
+    "@types/node": "^24.0.0"
+  }
+}

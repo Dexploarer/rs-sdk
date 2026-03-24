@@ -1,0 +1,2341 @@
+
+# tick 1 pos_change
+move:
+  from: start
+  to: "3264,3223"
+  tick: 1
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Border Guard,0,3
+  Goblin,2,3
+  Border Guard,0,4
+  Goblin,2,4
+  Border Guard,0,6
+objects[5]{name,dist,opts}:
+  Tree,1,Chop down
+  Tree,2,Chop down
+  Tree,3,Chop down
+  Oak,4,Chop down
+  Gate,4,Open
+
+# tick 26 pos_change
+move:
+  from: "3264,3223"
+  to: "3263,3221"
+  tick: 26
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Goblin,2,3
+  Border Guard,0,4
+  Goblin,2,4
+  Border Guard,0,5
+  Border Guard,0,7
+objects[5]{name,dist,opts}:
+  Tree,1,Chop down
+  Tree,2,Chop down
+  Oak,3,Chop down
+  Tree,4,Chop down
+  Tree,4,Chop down
+
+# tick 27 pos_change
+move:
+  from: "3263,3221"
+  to: "3263,3219"
+  tick: 27
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Goblin,2,1
+  Goblin,2,2
+  Border Guard,0,7
+  Border Guard,0,7
+  Goblin,2,8
+objects[5]{name,dist,opts}:
+  Tree,1,Chop down
+  Tree,3,Chop down
+  Tree,4,Chop down
+  Oak,4,Chop down
+  Tree,4,Chop down
+
+# tick 28 pos_change
+move:
+  from: "3263,3219"
+  to: "3262,3218"
+  tick: 28
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Goblin,2,0
+  Goblin,2,3
+  Duck,1,5
+  Goblin,2,6
+  Border Guard,0,8
+objects[5]{name,dist,opts}:
+  Tree,2,Chop down
+  Tree,3,Chop down
+  Tree,3,Chop down
+  Tree,4,Chop down
+  Oak,5,Chop down
+
+# tick 40 pos_change
+move:
+  from: "3262,3218"
+  to: "3261,3218"
+  tick: 40
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Goblin,2,3
+  Goblin,2,5
+  Duck,1,5
+  Border Guard,0,8
+  Border Guard,0,8
+objects[5]{name,dist,opts}:
+  Tree,2,Chop down
+  Tree,3,Chop down
+  Tree,4,Chop down
+  Tree,4,Chop down
+  Tree,5,Chop down
+
+# tick 41 inv_change
+inventoryChange:
+  added[1]: "Coins:14"
+  removed[1]: "Coins:9"
+  pos: "3261,3218"
+
+# tick 42 inv_change
+inventoryChange:
+  added[1]: "Bones:1"
+  removed[0]:
+  pos: "3261,3218"
+
+# tick 44 pos_change
+move:
+  from: "3261,3218"
+  to: "3264,3218"
+  tick: 44
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Goblin,2,1
+  Goblin,2,3
+  Border Guard,0,8
+  Border Guard,0,8
+  Border Guard,0,11
+objects[5]{name,dist,opts}:
+  Tree,2,Chop down
+  Tree,3,Chop down
+  Tree,4,Chop down
+  Tree,5,Chop down
+  Oak,5,Chop down
+
+# tick 45 pos_change
+move:
+  from: "3264,3218"
+  to: "3266,3217"
+  tick: 45
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Goblin,2,0
+  Goblin,2,3
+  Border Guard,0,8
+  Border Guard,0,8
+  Border Guard,0,11
+objects[5]{name,dist,opts}:
+  Tree,2,Chop down
+  Tree,3,Chop down
+  Tree,5,Chop down
+  Oak,6,Chop down
+  Tree,7,Chop down
+
+# tick 56 pos_change
+move:
+  from: "3266,3217"
+  to: "3264,3217"
+  tick: 56
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Goblin,2,2
+  Duck,1,8
+  Border Guard,0,9
+  Border Guard,0,9
+  Goblin,2,10
+objects[5]{name,dist,opts}:
+  Tree,2,Chop down
+  Tree,3,Chop down
+  Tree,5,Chop down
+  Tree,5,Chop down
+  Oak,6,Chop down
+
+# tick 57 pos_change
+move:
+  from: "3264,3217"
+  to: "3264,3216"
+  tick: 57
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Goblin,2,2
+  Duck,1,8
+  Border Guard,0,10
+  Border Guard,0,10
+  Goblin,2,10
+objects[5]{name,dist,opts}:
+  Tree,1,Chop down
+  Tree,4,Chop down
+  Tree,5,Chop down
+  Tree,6,Chop down
+  Oak,7,Chop down
+
+# tick 58 pos_change
+move:
+  from: "3264,3216"
+  to: "3263,3216"
+  tick: 58
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Goblin,2,1
+  Duck,1,7
+  Border Guard,0,10
+  Border Guard,0,10
+  Goblin,2,10
+objects[5]{name,dist,opts}:
+  Tree,2,Chop down
+  Tree,4,Chop down
+  Tree,4,Chop down
+  Tree,6,Chop down
+  Tree,7,Chop down
+
+# tick 60 pos_change
+move:
+  from: "3263,3216"
+  to: "3264,3217"
+  tick: 60
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Goblin,2,1
+  Duck,1,7
+  Border Guard,0,9
+  Border Guard,0,9
+  Goblin,2,11
+objects[5]{name,dist,opts}:
+  Tree,2,Chop down
+  Tree,3,Chop down
+  Tree,5,Chop down
+  Tree,5,Chop down
+  Oak,6,Chop down
+
+# tick 61 pos_change
+move:
+  from: "3264,3217"
+  to: "3265,3217"
+  tick: 61
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Duck,1,8
+  Border Guard,0,9
+  Border Guard,0,9
+  Border Guard,0,12
+  Border Guard,0,12
+objects[5]{name,dist,opts}:
+  Tree,2,Chop down
+  Tree,3,Chop down
+  Tree,5,Chop down
+  Tree,6,Chop down
+  Oak,6,Chop down
+
+# tick 62 inv_change
+inventoryChange:
+  added[1]: "Coins:15"
+  removed[1]: "Coins:14"
+  pos: "3265,3217"
+
+# tick 65 pos_change
+move:
+  from: "3265,3217"
+  to: "3264,3217"
+  tick: 65
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Duck,1,8
+  Border Guard,0,9
+  Border Guard,0,9
+  Border Guard,0,12
+  Border Guard,0,12
+objects[5]{name,dist,opts}:
+  Tree,2,Chop down
+  Tree,3,Chop down
+  Tree,5,Chop down
+  Tree,5,Chop down
+  Oak,6,Chop down
+
+# tick 66 pos_change
+move:
+  from: "3264,3217"
+  to: "3263,3215"
+  tick: 66
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Duck,1,9
+  Border Guard,0,10
+  Border Guard,0,10
+  Border Guard,0,13
+  Border Guard,0,13
+objects[5]{name,dist,opts}:
+  Tree,2,Chop down
+  Tree,4,Chop down
+  Tree,5,Chop down
+  Tree,7,Chop down
+  Tree,7,Chop down
+
+# tick 67 inv_change
+inventoryChange:
+  added[1]: "Coins:35"
+  removed[1]: "Coins:15"
+  pos: "3263,3215"
+
+# tick 70 pos_change
+move:
+  from: "3263,3215"
+  to: "3263,3216"
+  tick: 70
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Border Guard,0,9
+  Border Guard,0,9
+  Duck,1,10
+  Border Guard,0,12
+  Border Guard,0,12
+objects[5]{name,dist,opts}:
+  Tree,2,Chop down
+  Tree,4,Chop down
+  Tree,4,Chop down
+  Tree,6,Chop down
+  Tree,7,Chop down
+
+# tick 71 pos_change
+move:
+  from: "3263,3216"
+  to: "3263,3218"
+  tick: 71
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Border Guard,0,8
+  Border Guard,0,8
+  Duck,1,10
+  Border Guard,0,11
+  Border Guard,0,11
+objects[5]{name,dist,opts}:
+  Tree,2,Chop down
+  Tree,3,Chop down
+  Tree,4,Chop down
+  Tree,4,Chop down
+  Oak,5,Chop down
+
+# tick 72 pos_change
+move:
+  from: "3263,3218"
+  to: "3263,3220"
+  tick: 72
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Border Guard,0,6
+  Border Guard,0,6
+  Border Guard,0,9
+  Border Guard,0,9
+  Duck,1,10
+objects[5]{name,dist,opts}:
+  Tree,1,Chop down
+  Tree,2,Chop down
+  Oak,3,Chop down
+  Tree,4,Chop down
+  Tree,5,Chop down
+
+# tick 73 pos_change
+move:
+  from: "3263,3220"
+  to: "3263,3221"
+  tick: 73
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Border Guard,0,5
+  Border Guard,0,5
+  Border Guard,0,8
+  Border Guard,0,8
+  Duck,1,9
+objects[5]{name,dist,opts}:
+  Tree,1,Chop down
+  Tree,2,Chop down
+  Oak,3,Chop down
+  Tree,4,Chop down
+  Tree,4,Chop down
+
+# tick 74 pos_change
+move:
+  from: "3263,3221"
+  to: "3263,3224"
+  tick: 74
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Border Guard,0,4
+  Border Guard,0,5
+  Border Guard,0,5
+  Border Guard,0,5
+  Butterfly,0,7
+objects[5]{name,dist,opts}:
+  Tree,1,Chop down
+  Tree,2,Chop down
+  Oak,3,Chop down
+  Tree,4,Chop down
+  Tree,5,Chop down
+
+# tick 76 pos_change
+move:
+  from: "3263,3224"
+  to: "3264,3224"
+  tick: 76
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Border Guard,0,3
+  Border Guard,0,4
+  Border Guard,0,5
+  Border Guard,0,5
+  Butterfly,0,8
+objects[5]{name,dist,opts}:
+  Tree,1,Chop down
+  Tree,2,Chop down
+  Oak,4,Chop down
+  Tree,4,Chop down
+  Gate,4,Open
+
+# tick 77 pos_change
+move:
+  from: "3264,3224"
+  to: "3265,3224"
+  tick: 77
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Border Guard,0,2
+  Border Guard,0,3
+  Border Guard,0,5
+  Border Guard,0,5
+  Butterfly,0,9
+objects[5]{name,dist,opts}:
+  Tree,1,Chop down
+  Tree,2,Chop down
+  Gate,3,Open
+  Tree,4,Chop down
+  Gate,4,Open
+
+# tick 78 pos_change
+move:
+  from: "3265,3224"
+  to: "3267,3225"
+  tick: 78
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Border Guard,0,1
+  Border Guard,0,1
+  Border Guard,0,4
+  Border Guard,0,4
+  Goblin,2,9
+objects[5]{name,dist,opts}:
+  Gate,2,Open
+  Tree,3,Chop down
+  Tree,3,Chop down
+  Gate,3,Open
+  Tree,5,Chop down
+
+# tick 89 pos_change
+move:
+  from: "3267,3225"
+  to: "3267,3226"
+  tick: 89
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Border Guard,0,0
+  Border Guard,0,1
+  Border Guard,0,3
+  Border Guard,0,3
+  Goblin,2,9
+objects[5]{name,dist,opts}:
+  Gate,1,Open
+  Gate,2,Open
+  Tree,3,Chop down
+  Tree,4,Chop down
+  Tree,4,Chop down
+
+# tick 89 inv_change
+inventoryChange:
+  added[1]: "Coins:25"
+  removed[1]: "Coins:35"
+  pos: "3267,3226"
+
+# tick 90 pos_change
+move:
+  from: "3267,3226"
+  to: "3267,3227"
+  tick: 90
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Border Guard,0,1
+  Border Guard,0,1
+  Border Guard,0,2
+  Border Guard,0,2
+  Goblin,2,9
+objects[5]{name,dist,opts}:
+  Gate,1,Open
+  Gate,1,Open
+  Tree,3,Chop down
+  Tree,3,Chop down
+  Tree,5,Chop down
+
+# tick 91 pos_change
+move:
+  from: "3267,3227"
+  to: "3268,3227"
+  tick: 91
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Border Guard,0,1
+  Border Guard,0,1
+  Border Guard,0,2
+  Border Guard,0,2
+  Goblin,2,9
+objects[5]{name,dist,opts}:
+  Tree,3,Chop down
+  Tree,4,Chop down
+  Tree,5,Chop down
+  Tree,7,Chop down
+  Oak,8,Chop down
+
+# tick 95 pos_change
+move:
+  from: "3268,3227"
+  to: "3272,3224"
+  tick: 95
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Border Guard,0,3
+  Border Guard,0,4
+  Border Guard,0,4
+  Border Guard,0,4
+  Gnome pilot,0,12
+objects[5]{name,dist,opts}:
+  Gate,4,Open
+  Gate,4,Open
+  Tree,6,Chop down
+  Tree,7,Chop down
+  Tree,8,Chop down
+
+# tick 96 pos_change
+move:
+  from: "3272,3224"
+  to: "3272,3222"
+  tick: 96
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Border Guard,0,4
+  Border Guard,0,5
+  Border Guard,0,6
+  Border Guard,0,6
+  Gnome pilot,0,12
+objects[5]{name,dist,opts}:
+  Gate,5,Open
+  Gate,6,Open
+  Tree,7,Chop down
+  Tree,7,Chop down
+  Tree,8,Chop down
+
+# tick 97 pos_change
+move:
+  from: "3272,3222"
+  to: "3272,3218"
+  tick: 97
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Border Guard,0,7
+  Border Guard,0,7
+  Border Guard,0,10
+  Border Guard,0,10
+  Gnome pilot,0,12
+objects[5]{name,dist,opts}:
+  Tree,7,Chop down
+  Tree,7,Chop down
+  Tree,8,Chop down
+  Tree,8,Chop down
+  Gate,9,Open
+
+# tick 98 pos_change
+move:
+  from: "3272,3218"
+  to: "3273,3216"
+  tick: 98
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Border Guard,0,9
+  Border Guard,0,9
+  Gnome pilot,0,11
+  Border Guard,0,12
+  Border Guard,0,12
+objects[5]{name,dist,opts}:
+  Tree,8,Chop down
+  Tree,8,Chop down
+  Tree,9,Chop down
+  Tree,9,Chop down
+  Gate,11,Open
+
+# tick 99 pos_change
+move:
+  from: "3273,3216"
+  to: "3277,3212"
+  tick: 99
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Gnome pilot,0,7
+  Camel,0,8
+  Gem trader,0,9
+  Man,2,11
+  Border Guard,0,13
+objects[5]{name,dist,opts}:
+  Tree,12,Chop down
+  Tree,12,Chop down
+  Crate,12,Search
+  Tree,13,Chop down
+  Tree,13,Chop down
+
+# tick 100 pos_change
+move:
+  from: "3277,3212"
+  to: "3279,3210"
+  tick: 100
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Gnome pilot,0,5
+  Camel,0,5
+  Gem trader,0,7
+  Man,2,9
+  Camel,0,14
+objects[5]{name,dist,opts}:
+  Crate,10,Search
+  Curtain,13,Close
+  Tree,14,Chop down
+  Tree,14,Chop down
+  Tree,15,Chop down
+
+# tick 101 pos_change
+move:
+  from: "3279,3210"
+  to: "3281,3207"
+  tick: 101
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Camel,0,3
+  Gnome pilot,0,4
+  Man,2,5
+  Gem trader,0,7
+  Man,2,13
+objects[5]{name,dist,opts}:
+  Crate,8,Search
+  Curtain,11,Close
+  Ladder,15,Climb-up
+  Crate,15,Search
+  Crate,15,Search
+
+# tick 102 pos_change
+move:
+  from: "3281,3207"
+  to: "3281,3204"
+  tick: 102
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Camel,0,4
+  Man,2,4
+  Gnome pilot,0,6
+  Gem trader,0,8
+  Man,2,13
+objects[5]{name,dist,opts}:
+  Crate,8,Search
+  Curtain,11,Close
+  Ladder,12,Climb-up
+  Crate,12,Search
+  Door,13,Close
+
+# tick 103 pos_change
+move:
+  from: "3281,3204"
+  to: "3281,3200"
+  tick: 103
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Man,2,4
+  Camel,0,6
+  Gnome pilot,0,10
+  Tanner,0,10
+  Camel,0,11
+objects[5]{name,dist,opts}:
+  Ladder,8,Climb-up
+  Crate,8,Search
+  Crate,8,Search
+  Door,9,Close
+  Crate,9,Search
+
+# tick 104 pos_change
+move:
+  from: "3281,3200"
+  to: "3281,3198"
+  tick: 104
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Man,2,4
+  Camel,0,7
+  Tanner,0,8
+  Zeke,0,9
+  Camel,0,11
+objects[5]{name,dist,opts}:
+  Ladder,6,Climb-up
+  Door,7,Close
+  Crate,7,Search
+  Crate,8,Search
+  Crate,8,Search
+
+# tick 109 inv_change
+inventoryChange:
+  added[0]:
+  removed[1]: "Bones:1"
+  pos: "3281,3198"
+
+# tick 111 pos_change
+move:
+  from: "3281,3198"
+  to: "3281,3196"
+  tick: 111
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Man,2,3
+  Tanner,0,6
+  Camel,0,7
+  Zeke,0,7
+  Man,2,10
+objects[5]{name,dist,opts}:
+  Door,5,Close
+  Ladder,5,Climb-up
+  Crate,7,Search
+  Crate,8,Search
+  Crate,8,Search
+
+# tick 112 pos_change
+move:
+  from: "3281,3196"
+  to: "3281,3194"
+  tick: 112
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Man,2,4
+  Tanner,0,5
+  Zeke,0,7
+  Man,2,7
+  Camel,0,9
+objects[5]{name,dist,opts}:
+  Door,3,Close
+  Ladder,5,Climb-up
+  Crate,7,Search
+  Curtain,8,Close
+  Crate,8,Search
+
+# tick 113 pos_change
+move:
+  from: "3281,3194"
+  to: "3281,3190"
+  tick: 113
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Man,2,4
+  Man,2,5
+  Tanner,0,5
+  Zeke,0,7
+  Kebab seller,0,9
+objects[5]{name,dist,opts}:
+  Door,3,Close
+  Door,5,Close
+  Ladder,5,Climb-up
+  Curtain,6,Close
+  Crate,7,Search
+
+# tick 114 pos_change
+move:
+  from: "3281,3190"
+  to: "3281,3188"
+  tick: 114
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Man,2,3
+  Tanner,0,5
+  Man,2,7
+  Zeke,0,7
+  Kebab seller,0,9
+objects[5]{name,dist,opts}:
+  Door,3,Close
+  Door,3,Close
+  Ladder,5,Climb-up
+  Curtain,6,Close
+  Crate,7,Search
+
+# tick 115 pos_change
+move:
+  from: "3281,3188"
+  to: "3281,3184"
+  tick: 115
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Man,2,3
+  Osman,0,5
+  Zeke,0,7
+  Tanner,0,8
+  Kebab seller,0,9
+objects[5]{name,dist,opts}:
+  Door,2,Close
+  Door,5,Close
+  Curtain,6,Close
+  Door,7,Close
+  Ladder,8,Climb-up
+
+# tick 116 pos_change
+move:
+  from: "3281,3184"
+  to: "3281,3182"
+  tick: 116
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Man,2,5
+  Osman,0,5
+  Zeke,0,7
+  Al-Kharid warrior,9,7
+  Al-Kharid warrior,9,7
+objects[5]{name,dist,opts}:
+  Door,3,Close
+  Door,5,Close
+  Curtain,6,Close
+  Crate,9,Search
+  Door,9,Close
+
+# tick 117 pos_change
+move:
+  from: "3281,3182"
+  to: "3280,3178"
+  tick: 117
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Al-Kharid warrior,9,3
+  Al-Kharid warrior,9,4
+  Osman,0,6
+  Man,2,7
+  Kebab seller,0,8
+objects[5]{name,dist,opts}:
+  Door,4,Close
+  Drawers,5,Open
+  Door,7,Close
+  Large door,7,Open
+  Large door,7,Open
+
+# tick 118 pos_change
+move:
+  from: "3280,3178"
+  to: "3280,3176"
+  tick: 118
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Al-Kharid warrior,9,3
+  Al-Kharid warrior,9,4
+  Osman,0,6
+  Kebab seller,0,8
+  Al-Kharid warrior,9,8
+objects[5]{name,dist,opts}:
+  Drawers,3,Open
+  Door,4,Close
+  Closed chest,7,Open
+  Large door,7,Open
+  Large door,7,Open
+
+# tick 119 pos_change
+move:
+  from: "3280,3176"
+  to: "3276,3172"
+  tick: 119
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Camel,0,3
+  Al-Kharid warrior,9,6
+  Al-Kharid warrior,9,7
+  Al-Kharid warrior,9,7
+  Kebab seller,0,9
+objects[5]{name,dist,opts}:
+  Closed chest,6,Open
+  Closed chest,6,Open
+  Drawers,6,Open
+  Bank booth,8,Use/Use-quickly
+  Bank booth,8,Use/Use-quickly
+
+# tick 120 pos_change
+move:
+  from: "3276,3172"
+  to: "3276,3171"
+  tick: 120
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Camel,0,1
+  Al-Kharid warrior,9,7
+  Al-Kharid warrior,9,8
+  Al-Kharid warrior,9,8
+  Banker,0,9
+objects[5]{name,dist,opts}:
+  Closed chest,6,Open
+  Closed chest,6,Open
+  Drawers,6,Open
+  Bank booth,8,Use/Use-quickly
+  Bank booth,8,Use/Use-quickly
+
+# tick 121 pos_change
+move:
+  from: "3276,3171"
+  to: "3273,3167"
+  tick: 121
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Camel,0,3
+  Banker,0,5
+  Banker,0,5
+  Banker,0,5
+  Banker,0,5
+objects[5]{name,dist,opts}:
+  Bank booth,5,Use/Use-quickly
+  Bank booth,5,Use/Use-quickly
+  Bank booth,5,Use/Use-quickly
+  Bank booth,5,Use/Use-quickly
+  Bank booth,5,Use/Use-quickly
+
+# tick 122 pos_change
+move:
+  from: "3273,3167"
+  to: "3271,3166"
+  tick: 122
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Banker,0,3
+  Banker,0,3
+  Banker,0,3
+  Banker,0,3
+  Banker,0,3
+objects[5]{name,dist,opts}:
+  Bank booth,3,Use/Use-quickly
+  Bank booth,3,Use/Use-quickly
+  Bank booth,3,Use/Use-quickly
+  Bank booth,3,Use/Use-quickly
+  Bank booth,3,Use/Use-quickly
+
+# tick 123 pos_change
+move:
+  from: "3271,3166"
+  to: "3269,3164"
+  tick: 123
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Banker,0,2
+  Banker,0,2
+  Banker,0,3
+  Banker,0,4
+  Banker,0,5
+objects[5]{name,dist,opts}:
+  Bank booth,1,Use/Use-quickly
+  Bank booth,2,Use/Use-quickly
+  Bank booth,3,Use/Use-quickly
+  Bank booth,4,Use/Use-quickly
+  Bank booth,5,Use/Use-quickly
+
+# tick 131 pos_change
+move:
+  from: "3269,3164"
+  to: "3269,3163"
+  tick: 131
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Banker,0,2
+  Banker,0,3
+  Banker,0,4
+  Banker,0,5
+  Camel,0,5
+objects[5]{name,dist,opts}:
+  Bank booth,1,Use/Use-quickly
+  Bank booth,3,Use/Use-quickly
+  Bank booth,4,Use/Use-quickly
+  Bank booth,5,Use/Use-quickly
+  Bank booth,6,Use/Use-quickly
+
+# tick 132 pos_change
+move:
+  from: "3269,3163"
+  to: "3269,3164"
+  tick: 132
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Banker,0,2
+  Banker,0,2
+  Banker,0,3
+  Banker,0,4
+  Camel,0,4
+objects[5]{name,dist,opts}:
+  Bank booth,1,Use/Use-quickly
+  Bank booth,2,Use/Use-quickly
+  Bank booth,3,Use/Use-quickly
+  Bank booth,4,Use/Use-quickly
+  Bank booth,5,Use/Use-quickly
+
+# tick 137 inv_change
+inventoryChange:
+  added[1]: "Coins:24"
+  removed[1]: "Coins:25"
+  pos: "3269,3164"
+
+# tick 139 inv_change
+inventoryChange:
+  added[1]: "Coins:23"
+  removed[1]: "Coins:24"
+  pos: "3269,3164"
+
+# tick 142 inv_change
+inventoryChange:
+  added[1]: ""
+  removed[1]: "Coins:23"
+  pos: "3269,3164"
+
+# tick 148 inv_change
+inventoryChange:
+  added[1]: "Bronze arrow:25"
+  removed[0]:
+  pos: "3269,3164"
+
+# tick 151 inv_change
+inventoryChange:
+  added[1]: "Air rune:25"
+  removed[0]:
+  pos: "3269,3164"
+
+# tick 154 inv_change
+inventoryChange:
+  added[1]: "Mind rune:15"
+  removed[0]:
+  pos: "3269,3164"
+
+# tick 157 inv_change
+inventoryChange:
+  added[1]: "Body rune:2"
+  removed[0]:
+  pos: "3269,3164"
+
+# tick 161 inv_change
+inventoryChange:
+  added[1]: "Earth rune:4"
+  removed[0]:
+  pos: "3269,3164"
+
+# tick 164 inv_change
+inventoryChange:
+  added[1]: "Water rune:6"
+  removed[0]:
+  pos: "3269,3164"
+
+# tick 166 inv_change
+inventoryChange:
+  added[1]: "Bronze pickaxe:1"
+  removed[0]:
+  pos: "3269,3164"
+
+# tick 170 inv_change
+inventoryChange:
+  added[1]: "Wooden shield:1"
+  removed[0]:
+  pos: "3269,3164"
+
+# tick 172 inv_change
+inventoryChange:
+  added[1]: "Bones:1"
+  removed[0]:
+  pos: "3269,3164"
+
+# tick 174 inv_change
+inventoryChange:
+  added[1]: "Shrimps:1"
+  removed[0]:
+  pos: "3269,3164"
+
+# tick 176 inv_change
+inventoryChange:
+  added[1]: "Bread:1"
+  removed[0]:
+  pos: "3269,3164"
+
+# tick 179 inv_change
+inventoryChange:
+  added[0]:
+  removed[1]: "Bread:1"
+  pos: "3269,3164"
+
+# tick 182 inv_change
+inventoryChange:
+  added[0]:
+  removed[1]: "Shrimps:1"
+  pos: "3269,3164"
+
+# tick 189 inv_change
+inventoryChange:
+  added[0]:
+  removed[1]: "Bones:1"
+  pos: "3269,3164"
+
+# tick 191 inv_change
+inventoryChange:
+  added[0]:
+  removed[1]: "Wooden shield:1"
+  pos: "3269,3164"
+
+# tick 201 inv_change
+inventoryChange:
+  added[1]: "Bronze axe:1"
+  removed[0]:
+  pos: "3269,3164"
+
+# tick 203 inv_change
+inventoryChange:
+  added[1]: "Tinderbox:1"
+  removed[0]:
+  pos: "3269,3164"
+
+# tick 207 pos_change
+move:
+  from: "3269,3164"
+  to: "3270,3165"
+  tick: 207
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Banker,0,3
+  Banker,0,3
+  Banker,0,3
+  Banker,0,3
+  Banker,0,3
+objects[5]{name,dist,opts}:
+  Bank booth,2,Use/Use-quickly
+  Bank booth,2,Use/Use-quickly
+  Bank booth,2,Use/Use-quickly
+  Bank booth,3,Use/Use-quickly
+  Bank booth,4,Use/Use-quickly
+
+# tick 208 pos_change
+move:
+  from: "3270,3165"
+  to: "3273,3168"
+  tick: 208
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Camel,0,3
+  Banker,0,6
+  Banker,0,6
+  Banker,0,6
+  Banker,0,6
+objects[5]{name,dist,opts}:
+  Bank booth,5,Use/Use-quickly
+  Bank booth,5,Use/Use-quickly
+  Bank booth,5,Use/Use-quickly
+  Bank booth,5,Use/Use-quickly
+  Bank booth,5,Use/Use-quickly
+
+# tick 209 pos_change
+move:
+  from: "3273,3168"
+  to: "3274,3170"
+  tick: 209
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Camel,0,1
+  Banker,0,7
+  Banker,0,7
+  Banker,0,7
+  Banker,0,7
+objects[5]{name,dist,opts}:
+  Bank booth,6,Use/Use-quickly
+  Bank booth,6,Use/Use-quickly
+  Bank booth,6,Use/Use-quickly
+  Bank booth,6,Use/Use-quickly
+  Bank booth,6,Use/Use-quickly
+
+# tick 210 pos_change
+move:
+  from: "3274,3170"
+  to: "3275,3172"
+  tick: 210
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Camel,0,0
+  Al-Kharid warrior,9,7
+  Banker,0,8
+  Banker,0,8
+  Banker,0,8
+objects[5]{name,dist,opts}:
+  Bank booth,7,Use/Use-quickly
+  Bank booth,7,Use/Use-quickly
+  Bank booth,7,Use/Use-quickly
+  Bank booth,7,Use/Use-quickly
+  Closed chest,7,Open
+
+# tick 210 inv_change
+inventoryChange:
+  added[2]: "Bronze sword:1","Wooden shield:1"
+  removed[1]: "Shortbow:1"
+  pos: "3275,3172"
+
+# tick 211 pos_change
+move:
+  from: "3275,3172"
+  to: "3277,3176"
+  tick: 211
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Camel,0,4
+  Al-Kharid warrior,9,5
+  Kebab seller,0,5
+  Al-Kharid warrior,9,6
+  Banker,0,9
+objects[5]{name,dist,opts}:
+  Door,4,Close
+  Drawers,5,Open
+  Crate,7,Search
+  Crate,7,Search
+  Closed chest,7,Open
+
+# tick 211 inv_change
+inventoryChange:
+  added[0]:
+  removed[1]: "Bronze arrow:25"
+  pos: "3277,3176"
+
+# tick 213 pos_change
+move:
+  from: "3277,3176"
+  to: "3277,3178"
+  tick: 213
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Al-Kharid warrior,9,5
+  Kebab seller,0,5
+  Al-Kharid warrior,9,6
+  Camel,0,7
+  Man,2,8
+objects[5]{name,dist,opts}:
+  Door,2,Close
+  Crate,5,Search
+  Drawers,5,Open
+  Crate,6,Search
+  Door,7,Close
+
+# tick 214 pos_change
+move:
+  from: "3277,3178"
+  to: "3279,3182"
+  tick: 214
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Man,2,2
+  Al-Kharid warrior,9,6
+  Kebab seller,0,6
+  Al-Kharid warrior,9,7
+  Al-Kharid warrior,9,8
+objects[5]{name,dist,opts}:
+  Door,3,Close
+  Door,3,Close
+  Crate,7,Search
+  Crate,8,Search
+  Curtain,8,Close
+
+# tick 215 pos_change
+move:
+  from: "3279,3182"
+  to: "3280,3183"
+  tick: 215
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Man,2,1
+  Al-Kharid warrior,9,8
+  Kebab seller,0,8
+  Al-Kharid warrior,9,9
+  Tanner,0,9
+objects[5]{name,dist,opts}:
+  Door,2,Close
+  Door,4,Close
+  Curtain,7,Close
+  Crate,8,Search
+  Door,8,Close
+
+# tick 216 pos_change
+move:
+  from: "3280,3183"
+  to: "3280,3188"
+  tick: 216
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Man,2,3
+  Tanner,0,5
+  Kebab seller,0,8
+  Osman,0,10
+  Zeke,0,10
+objects[5]{name,dist,opts}:
+  Door,3,Close
+  Door,3,Close
+  Ladder,6,Climb-up
+  Curtain,7,Close
+  Crate,8,Search
+
+# tick 217 pos_change
+move:
+  from: "3280,3188"
+  to: "3280,3190"
+  tick: 217
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Tanner,0,3
+  Man,2,5
+  Kebab seller,0,8
+  Camel,0,9
+  Osman,0,10
+objects[5]{name,dist,opts}:
+  Door,2,Close
+  Door,5,Close
+  Ladder,6,Climb-up
+  Curtain,7,Close
+  Crate,8,Search
+
+# tick 218 pos_change
+move:
+  from: "3280,3190"
+  to: "3280,3194"
+  tick: 218
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Tanner,0,3
+  Man,2,6
+  Man,2,8
+  Camel,0,9
+  Man,2,9
+objects[5]{name,dist,opts}:
+  Door,3,Close
+  Ladder,6,Climb-up
+  Curtain,8,Close
+  Crate,8,Search
+  Door,9,Close
+
+# tick 219 pos_change
+move:
+  from: "3280,3194"
+  to: "3280,3196"
+  tick: 219
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Tanner,0,3
+  Man,2,4
+  Camel,0,9
+  Man,2,9
+  Zeke,0,10
+objects[5]{name,dist,opts}:
+  Door,5,Close
+  Ladder,6,Climb-up
+  Crate,8,Search
+  Crate,9,Search
+  Crate,9,Search
+
+# tick 220 pos_change
+move:
+  from: "3280,3196"
+  to: "3280,3200"
+  tick: 220
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Man,2,5
+  Tanner,0,6
+  Camel,0,9
+  Man,2,9
+  Zeke,0,11
+objects[5]{name,dist,opts}:
+  Ladder,8,Climb-up
+  Crate,8,Search
+  Door,9,Close
+  Crate,9,Search
+  Crate,9,Search
+
+# tick 221 pos_change
+move:
+  from: "3280,3200"
+  to: "3281,3202"
+  tick: 221
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Man,2,4
+  Tanner,0,8
+  Camel,0,8
+  Man,2,8
+  Man,2,10
+objects[5]{name,dist,opts}:
+  Crate,8,Search
+  Ladder,10,Climb-up
+  Crate,10,Search
+  Door,11,Close
+  Crate,11,Search
+
+# tick 222 pos_change
+move:
+  from: "3281,3202"
+  to: "3285,3206"
+  tick: 222
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Man,2,3
+  Man,2,4
+  Camel,0,5
+  Gnome pilot,0,6
+  Man,2,7
+objects[5]{name,dist,opts}:
+  Crate,4,Search
+  Curtain,7,Close
+  Crate,11,Search
+  Ladder,14,Climb-up
+  Crate,14,Search
+
+# tick 223 pos_change
+move:
+  from: "3285,3206"
+  to: "3285,3208"
+  tick: 223
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Gnome pilot,0,4
+  Gem trader,0,4
+  Man,2,5
+  Man,2,6
+  Camel,0,7
+objects[3]{name,dist,opts}:
+  Crate,6,Search
+  Curtain,7,Close
+  Crate,11,Search
+
+# tick 224 pos_change
+move:
+  from: "3285,3208"
+  to: "3285,3212"
+  tick: 224
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Gnome pilot,0,0
+  Gem trader,0,2
+  Man,2,9
+  Camel,0,9
+  Camel,0,11
+objects[3]{name,dist,opts}:
+  Curtain,7,Close
+  Crate,10,Search
+  Crate,11,Search
+
+# tick 225 pos_change
+move:
+  from: "3285,3212"
+  to: "3285,3213"
+  tick: 225
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Gnome pilot,0,1
+  Gem trader,0,1
+  Camel,0,9
+  Man,2,10
+  Silk trader,0,11
+objects[3]{name,dist,opts}:
+  Curtain,7,Close
+  Crate,11,Search
+  Crate,11,Search
+
+# tick 226 pos_change
+move:
+  from: "3285,3213"
+  to: "3290,3217"
+  tick: 226
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Gem trader,0,3
+  Gnome pilot,0,5
+  Camel,0,9
+  Camel,0,9
+  Man,2,11
+objects[3]{name,dist,opts}:
+  Curtain,11,Close
+  Crate,11,Search
+  Crate,15,Search
+
+# tick 227 pos_change
+move:
+  from: "3290,3217"
+  to: "3291,3217"
+  tick: 227
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Gem trader,0,5
+  Gnome pilot,0,7
+  Camel,0,9
+  Camel,0,10
+  Man,2,11
+objects[4]{name,dist,opts}:
+  Curtain,11,Close
+  Crate,11,Search
+  Crate,15,Search
+  Crate,15,Search
+
+# tick 228 pos_change
+move:
+  from: "3291,3217"
+  to: "3296,3221"
+  tick: 228
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Camel,0,6
+  Gem trader,0,9
+  Gnome pilot,0,11
+  Camel,0,11
+  Camel,0,13
+objects[5]{name,dist,opts}:
+  Curtain,15,Close
+  Crate,15,Search
+  Crate,15,Search
+  Crate,15,Search
+  Boxes,15,Search
+
+# tick 229 pos_change
+move:
+  from: "3296,3221"
+  to: "3297,3222"
+  tick: 229
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Camel,0,4
+  Camel,0,10
+  Gem trader,0,11
+  Camel,0,11
+  Gnome pilot,0,13
+objects[5]{name,dist,opts}:
+  Door,3,Close
+  Door,5,Close
+  Curtain,6,Close
+  Crate,9,Search
+  Door,9,Close
+
+# tick 230 pos_change
+move:
+  from: "3297,3222"
+  to: "3297,3227"
+  tick: 230
+  hp: 44/44
+nearby[4]{name,lvl,dist}:
+  Camel,0,1
+  Camel,0,6
+  Gnome pilot,0,13
+  Gem trader,0,13
+objects[2]{name,dist,opts}:
+  Gate,15,Open
+  Gate,15,Open
+
+# tick 231 pos_change
+move:
+  from: "3297,3227"
+  to: "3299,3229"
+  tick: 231
+  hp: 44/44
+nearby[3]{name,lvl,dist}:
+  Camel,0,3
+  Camel,0,8
+  Mubariz,0,15
+objects[2]{name,dist,opts}:
+  Gate,13,Open
+  Gate,13,Open
+
+# tick 232 pos_change
+move:
+  from: "3299,3229"
+  to: "3299,3231"
+  tick: 232
+  hp: 44/44
+nearby[3]{name,lvl,dist}:
+  Camel,0,4
+  Camel,0,9
+  Mubariz,0,15
+objects[2]{name,dist,opts}:
+  Gate,13,Open
+  Gate,13,Open
+
+# tick 233 pos_change
+move:
+  from: "3299,3231"
+  to: "3299,3233"
+  tick: 233
+  hp: 44/44
+nearby[3]{name,lvl,dist}:
+  Camel,0,6
+  Camel,0,10
+  Mubariz,0,15
+objects[2]{name,dist,opts}:
+  Gate,13,Open
+  Gate,13,Open
+
+# tick 234 pos_change
+move:
+  from: "3299,3233"
+  to: "3299,3237"
+  tick: 234
+  hp: 44/44
+nearby[3]{name,lvl,dist}:
+  Camel,0,10
+  Camel,0,12
+  Mubariz,0,14
+objects[2]{name,dist,opts}:
+  Gate,13,Open
+  Gate,13,Open
+
+# tick 235 pos_change
+move:
+  from: "3299,3237"
+  to: "3300,3239"
+  tick: 235
+  hp: 44/44
+nearby[3]{name,lvl,dist}:
+  Camel,0,12
+  Camel,0,12
+  Mubariz,0,13
+objects[2]{name,dist,opts}:
+  Gate,12,Open
+  Gate,12,Open
+
+# tick 236 pos_change
+move:
+  from: "3300,3239"
+  to: "3300,3243"
+  tick: 236
+  hp: 44/44
+nearby[2]{name,lvl,dist}:
+  Camel,0,12
+  Mubariz,0,13
+objects[2]{name,dist,opts}:
+  Gate,12,Open
+  Gate,12,Open
+
+# tick 237 pos_change
+move:
+  from: "3300,3243"
+  to: "3300,3245"
+  tick: 237
+  hp: 44/44
+nearby[3]{name,lvl,dist}:
+  Camel,0,13
+  Mubariz,0,13
+  Rat,1,15
+objects[2]{name,dist,opts}:
+  Gate,12,Open
+  Gate,12,Open
+
+# tick 238 pos_change
+move:
+  from: "3300,3245"
+  to: "3299,3249"
+  tick: 238
+  hp: 44/44
+nearby[3]{name,lvl,dist}:
+  Rat,1,10
+  Mubariz,0,13
+  Imp,2,14
+objects[2]{name,dist,opts}:
+  Gate,14,Open
+  Gate,15,Open
+
+# tick 239 pos_change
+move:
+  from: "3299,3249"
+  to: "3299,3250"
+  tick: 239
+  hp: 44/44
+nearby[4]{name,lvl,dist}:
+  Rat,1,10
+  Imp,2,11
+  Mubariz,0,14
+  Camel,0,15
+objects[1]{name,dist,opts}:
+  Gate,15,Open
+
+# tick 240 pos_change
+move:
+  from: "3299,3250"
+  to: "3299,3255"
+  tick: 240
+  hp: 44/44
+nearby[4]{name,lvl,dist}:
+  Imp,2,9
+  Camel,0,10
+  Rat,1,12
+  Mubariz,0,14
+objects[0]:
+
+# tick 241 pos_change
+move:
+  from: "3299,3255"
+  to: "3299,3257"
+  tick: 241
+  hp: 44/44
+nearby[3]{name,lvl,dist}:
+  Imp,2,8
+  Camel,0,10
+  Rat,1,12
+objects[0]:
+
+# tick 242 pos_change
+move:
+  from: "3299,3257"
+  to: "3299,3261"
+  tick: 242
+  hp: 44/44
+nearby[3]{name,lvl,dist}:
+  Imp,2,6
+  Rat,1,12
+  Camel,0,12
+objects[0]:
+
+# tick 243 pos_change
+move:
+  from: "3299,3261"
+  to: "3298,3263"
+  tick: 243
+  hp: 44/44
+nearby[3]{name,lvl,dist}:
+  Imp,2,6
+  Rat,1,12
+  Camel,0,14
+objects[2]{name,dist,opts}:
+  Gate,14,Open
+  Gate,14,Open
+
+# tick 244 pos_change
+move:
+  from: "3298,3263"
+  to: "3294,3267"
+  tick: 244
+  hp: 44/44
+nearby[2]{name,lvl,dist}:
+  Imp,2,4
+  Scorpion,14,12
+objects[1]{name,dist,opts}:
+  Rocks,14,Mine/Prospect
+
+# tick 245 pos_change
+move:
+  from: "3294,3267"
+  to: "3293,3268"
+  tick: 245
+  hp: 44/44
+nearby[2]{name,lvl,dist}:
+  Imp,2,4
+  Scorpion,14,11
+objects[1]{name,dist,opts}:
+  Rocks,13,Mine/Prospect
+
+# tick 247 pos_change
+move:
+  from: "3293,3268"
+  to: "3294,3269"
+  tick: 247
+  hp: 44/44
+nearby[3]{name,lvl,dist}:
+  Imp,2,7
+  Scorpion,14,10
+  Man,0,15
+objects[2]{name,dist,opts}:
+  Rocks,12,Mine/Prospect
+  Rocks iron ore,15,Mine/Prospect
+
+# tick 248 pos_change
+move:
+  from: "3294,3269"
+  to: "3297,3270"
+  tick: 248
+  hp: 44/44
+nearby[4]{name,lvl,dist}:
+  Scorpion,14,9
+  Rat,1,14
+  Camel,0,14
+  Man,0,15
+objects[3]{name,dist,opts}:
+  Rocks,11,Mine/Prospect
+  Rocks iron ore,14,Mine/Prospect
+  Rocks iron ore,15,Mine/Prospect
+
+# tick 250 pos_change
+move:
+  from: "3297,3270"
+  to: "3297,3274"
+  tick: 250
+  hp: 44/44
+nearby[3]{name,lvl,dist}:
+  Scorpion,14,7
+  Man,0,11
+  Camel,0,15
+objects[5]{name,dist,opts}:
+  Rocks,9,Mine/Prospect
+  Rocks iron ore,10,Mine/Prospect
+  Rocks iron ore,11,Mine/Prospect
+  Rocks gold ore,13,Mine/Prospect
+  Rocks gold ore,14,Mine/Prospect
+
+# tick 251 pos_change
+move:
+  from: "3297,3274"
+  to: "3297,3276"
+  tick: 251
+  hp: 44/44
+nearby[3]{name,lvl,dist}:
+  Scorpion,14,7
+  Man,0,9
+  Scorpion,14,15
+objects[5]{name,dist,opts}:
+  Rocks iron ore,8,Mine/Prospect
+  Rocks iron ore,9,Mine/Prospect
+  Rocks,9,Mine/Prospect
+  Rocks gold ore,11,Mine/Prospect
+  Rocks gold ore,12,Mine/Prospect
+
+# tick 252 pos_change
+move:
+  from: "3297,3276"
+  to: "3298,3280"
+  tick: 252
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Man,0,5
+  Scorpion,14,6
+  Scorpion,14,10
+  Scorpion,14,13
+  Camel,0,15
+objects[5]{name,dist,opts}:
+  Rocks iron ore,5,Mine/Prospect
+  Rocks iron ore,5,Mine/Prospect
+  Rocks gold ore,7,Mine/Prospect
+  Rocks gold ore,8,Mine/Prospect
+  Rocks,8,Mine/Prospect
+
+# tick 253 pos_change
+move:
+  from: "3298,3280"
+  to: "3300,3282"
+  tick: 253
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Scorpion,14,4
+  Man,0,4
+  Scorpion,14,8
+  Scorpion,14,11
+  Camel,0,13
+objects[5]{name,dist,opts}:
+  Rocks iron ore,3,Mine/Prospect
+  Rocks iron ore,3,Mine/Prospect
+  Rocks gold ore,6,Mine/Prospect
+  Rocks gold ore,6,Mine/Prospect
+  Rocks,6,Mine/Prospect
+
+# tick 254 pos_change
+move:
+  from: "3300,3282"
+  to: "3300,3285"
+  tick: 254
+  hp: 44/44
+nearby[4]{name,lvl,dist}:
+  Scorpion,14,4
+  Man,0,4
+  Scorpion,14,5
+  Scorpion,14,8
+objects[5]{name,dist,opts}:
+  Rocks iron ore,2,Mine/Prospect
+  Rocks iron ore,3,Mine/Prospect
+  Rocks gold ore,6,Mine/Prospect
+  Rocks gold ore,6,Mine/Prospect
+  Rocks,6,Mine/Prospect
+
+# tick 255 pos_change
+move:
+  from: "3300,3285"
+  to: "3298,3285"
+  tick: 255
+  hp: 44/44
+nearby[4]{name,lvl,dist}:
+  Man,0,3
+  Scorpion,14,5
+  Scorpion,14,6
+  Scorpion,14,8
+objects[5]{name,dist,opts}:
+  Rocks gold ore,4,Mine/Prospect
+  Rocks gold ore,4,Mine/Prospect
+  Rocks iron ore,4,Mine/Prospect
+  Rocks iron ore,5,Mine/Prospect
+  Rocks,8,Mine/Prospect
+
+# tick 257 pos_change
+move:
+  from: "3298,3285"
+  to: "3299,3285"
+  tick: 257
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Man,0,4
+  Scorpion,14,5
+  Scorpion,14,5
+  Scorpion,14,6
+  Scorpion,14,14
+objects[5]{name,dist,opts}:
+  Rocks iron ore,3,Mine/Prospect
+  Rocks iron ore,4,Mine/Prospect
+  Rocks gold ore,5,Mine/Prospect
+  Rocks gold ore,5,Mine/Prospect
+  Rocks,7,Mine/Prospect
+
+# tick 258 pos_change
+move:
+  from: "3299,3285"
+  to: "3300,3282"
+  tick: 258
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Scorpion,14,4
+  Man,0,4
+  Scorpion,14,8
+  Scorpion,14,8
+  Camel,0,13
+objects[5]{name,dist,opts}:
+  Rocks iron ore,3,Mine/Prospect
+  Rocks iron ore,3,Mine/Prospect
+  Rocks gold ore,6,Mine/Prospect
+  Rocks gold ore,6,Mine/Prospect
+  Rocks,6,Mine/Prospect
+
+# tick 259 pos_change
+move:
+  from: "3300,3282"
+  to: "3298,3280"
+  tick: 259
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Man,0,5
+  Scorpion,14,6
+  Scorpion,14,10
+  Scorpion,14,10
+  Camel,0,12
+objects[5]{name,dist,opts}:
+  Rocks iron ore,5,Mine/Prospect
+  Rocks iron ore,5,Mine/Prospect
+  Rocks gold ore,7,Mine/Prospect
+  Rocks gold ore,8,Mine/Prospect
+  Rocks,8,Mine/Prospect
+
+# tick 260 pos_change
+move:
+  from: "3298,3280"
+  to: "3295,3281"
+  tick: 260
+  hp: 44/44
+nearby[4]{name,lvl,dist}:
+  Man,0,3
+  Scorpion,14,7
+  Scorpion,14,9
+  Scorpion,14,9
+objects[5]{name,dist,opts}:
+  Rocks gold ore,6,Mine/Prospect
+  Rocks gold ore,7,Mine/Prospect
+  Rocks iron ore,7,Mine/Prospect
+  Rocks iron ore,8,Mine/Prospect
+  Rocks,11,Mine/Prospect
+
+# tick 261 pos_change
+move:
+  from: "3295,3281"
+  to: "3295,3282"
+  tick: 261
+  hp: 44/44
+nearby[4]{name,lvl,dist}:
+  Man,0,3
+  Scorpion,14,6
+  Scorpion,14,8
+  Scorpion,14,9
+objects[5]{name,dist,opts}:
+  Rocks gold ore,5,Mine/Prospect
+  Rocks gold ore,6,Mine/Prospect
+  Rocks iron ore,7,Mine/Prospect
+  Rocks iron ore,8,Mine/Prospect
+  Rocks,11,Mine/Prospect
+
+# tick 309 inv_change
+inventoryChange:
+  added[2]: "Air rune:24","Mind rune:14"
+  removed[2]: "Air rune:25","Mind rune:15"
+  pos: "3295,3282"
+
+# tick 316 pos_change
+move:
+  from: "3295,3282"
+  to: "3295,3281"
+  tick: 316
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Scorpion,14,4
+  Man,0,4
+  Scorpion,14,6
+  Scorpion,14,10
+  Imp,2,11
+objects[5]{name,dist,opts}:
+  Rocks gold ore,6,Mine/Prospect
+  Rocks gold ore,7,Mine/Prospect
+  Rocks iron ore,7,Mine/Prospect
+  Rocks iron ore,8,Mine/Prospect
+  Rocks,11,Mine/Prospect
+
+# tick 317 pos_change
+move:
+  from: "3295,3281"
+  to: "3295,3280"
+  tick: 317
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Scorpion,14,3
+  Man,0,5
+  Scorpion,14,7
+  Imp,2,10
+  Scorpion,14,12
+objects[5]{name,dist,opts}:
+  Rocks gold ore,7,Mine/Prospect
+  Rocks iron ore,7,Mine/Prospect
+  Rocks gold ore,8,Mine/Prospect
+  Rocks iron ore,8,Mine/Prospect
+  Rocks,11,Mine/Prospect
+
+# tick 318 pos_change
+move:
+  from: "3295,3280"
+  to: "3297,3280"
+  tick: 318
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Scorpion,14,0
+  Man,0,5
+  Scorpion,14,7
+  Imp,2,10
+  Scorpion,14,12
+objects[5]{name,dist,opts}:
+  Rocks iron ore,5,Mine/Prospect
+  Rocks iron ore,6,Mine/Prospect
+  Rocks gold ore,7,Mine/Prospect
+  Rocks gold ore,8,Mine/Prospect
+  Rocks,9,Mine/Prospect
+
+# tick 319 pos_change
+move:
+  from: "3297,3280"
+  to: "3295,3280"
+  tick: 319
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Scorpion,14,2
+  Man,0,5
+  Scorpion,14,7
+  Imp,2,10
+  Scorpion,14,12
+objects[5]{name,dist,opts}:
+  Rocks gold ore,7,Mine/Prospect
+  Rocks iron ore,7,Mine/Prospect
+  Rocks gold ore,8,Mine/Prospect
+  Rocks iron ore,8,Mine/Prospect
+  Rocks,11,Mine/Prospect
+
+# tick 320 pos_change
+move:
+  from: "3295,3280"
+  to: "3295,3282"
+  tick: 320
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Man,0,3
+  Scorpion,14,5
+  Scorpion,14,5
+  Scorpion,14,10
+  Imp,2,15
+objects[5]{name,dist,opts}:
+  Rocks gold ore,5,Mine/Prospect
+  Rocks gold ore,6,Mine/Prospect
+  Rocks iron ore,7,Mine/Prospect
+  Rocks iron ore,8,Mine/Prospect
+  Rocks,11,Mine/Prospect
+
+# tick 324 inv_change
+inventoryChange:
+  added[2]: "Air rune:23","Mind rune:13"
+  removed[2]: "Air rune:24","Mind rune:14"
+  pos: "3295,3282"
+
+# tick 331 pos_change
+move:
+  from: "3295,3282"
+  to: "3295,3281"
+  tick: 331
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Man,0,4
+  Scorpion,14,5
+  Scorpion,14,6
+  Scorpion,14,9
+  Imp,2,10
+objects[5]{name,dist,opts}:
+  Rocks gold ore,6,Mine/Prospect
+  Rocks gold ore,7,Mine/Prospect
+  Rocks iron ore,7,Mine/Prospect
+  Rocks iron ore,8,Mine/Prospect
+  Rocks,11,Mine/Prospect
+
+# tick 332 pos_change
+move:
+  from: "3295,3281"
+  to: "3296,3280"
+  tick: 332
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Scorpion,14,5
+  Man,0,6
+  Scorpion,14,7
+  Imp,2,9
+  Scorpion,14,10
+objects[5]{name,dist,opts}:
+  Rocks iron ore,6,Mine/Prospect
+  Rocks gold ore,7,Mine/Prospect
+  Rocks iron ore,7,Mine/Prospect
+  Rocks gold ore,8,Mine/Prospect
+  Rocks,10,Mine/Prospect
+
+# tick 333 pos_change
+move:
+  from: "3296,3280"
+  to: "3297,3280"
+  tick: 333
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Scorpion,14,6
+  Man,0,6
+  Scorpion,14,7
+  Imp,2,7
+  Scorpion,14,10
+objects[5]{name,dist,opts}:
+  Rocks iron ore,5,Mine/Prospect
+  Rocks iron ore,6,Mine/Prospect
+  Rocks gold ore,7,Mine/Prospect
+  Rocks gold ore,8,Mine/Prospect
+  Rocks,9,Mine/Prospect
+
+# tick 334 pos_change
+move:
+  from: "3297,3280"
+  to: "3295,3281"
+  tick: 334
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Man,0,6
+  Scorpion,14,6
+  Scorpion,14,8
+  Imp,2,8
+  Scorpion,14,9
+objects[5]{name,dist,opts}:
+  Rocks gold ore,6,Mine/Prospect
+  Rocks gold ore,7,Mine/Prospect
+  Rocks iron ore,7,Mine/Prospect
+  Rocks iron ore,8,Mine/Prospect
+  Rocks,11,Mine/Prospect
+
+# tick 335 pos_change
+move:
+  from: "3295,3281"
+  to: "3295,3282"
+  tick: 335
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Scorpion,14,5
+  Man,0,6
+  Scorpion,14,8
+  Scorpion,14,9
+  Imp,2,9
+objects[5]{name,dist,opts}:
+  Rocks gold ore,5,Mine/Prospect
+  Rocks gold ore,6,Mine/Prospect
+  Rocks iron ore,7,Mine/Prospect
+  Rocks iron ore,8,Mine/Prospect
+  Rocks,11,Mine/Prospect
+
+# tick 340 inv_change
+inventoryChange:
+  added[3]: "Air rune:22","Mind rune:12","Water rune:5"
+  removed[3]: "Air rune:23","Mind rune:13","Water rune:6"
+  pos: "3295,3282"
+
+# tick 350 inv_change
+inventoryChange:
+  added[3]: "Air rune:21","Mind rune:11","Water rune:4"
+  removed[3]: "Air rune:22","Mind rune:12","Water rune:5"
+  pos: "3295,3282"
+
+# tick 357 inv_change
+inventoryChange:
+  added[3]: "Air rune:20","Mind rune:10","Earth rune:2"
+  removed[3]: "Air rune:21","Mind rune:11","Earth rune:4"
+  pos: "3295,3282"
+
+# tick 372 pos_change
+move:
+  from: "3295,3282"
+  to: "3294,3282"
+  tick: 372
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Imp,2,2
+  Man,0,3
+  Scorpion,14,5
+  Scorpion,14,9
+  Scorpion,14,12
+objects[5]{name,dist,opts}:
+  Rocks gold ore,5,Mine/Prospect
+  Rocks gold ore,6,Mine/Prospect
+  Rocks iron ore,8,Mine/Prospect
+  Rocks iron ore,9,Mine/Prospect
+  Rocks,12,Mine/Prospect
+
+# tick 373 pos_change
+move:
+  from: "3294,3282"
+  to: "3292,3282"
+  tick: 373
+  hp: 44/44
+nearby[5]{name,lvl,dist}:
+  Imp,2,1
+  Man,0,3
+  Scorpion,14,5
+  Scorpion,14,11
+  Scorpion,14,12
+objects[5]{name,dist,opts}:
+  Rocks gold ore,5,Mine/Prospect
+  Rocks gold ore,6,Mine/Prospect
+  Rocks iron ore,10,Mine/Prospect
+  Rocks iron ore,11,Mine/Prospect
+  Rocks,14,Mine/Prospect
+
+# tick 383 inv_change
+inventoryChange:
+  added[2]: "Air rune:19","Mind rune:9"
+  removed[3]: "Air rune:20","Mind rune:10","Earth rune:2"
+  pos: "3292,3282"
+
+# tick 389 inv_change
+inventoryChange:
+  added[3]: "Air rune:18","Mind rune:8","Water rune:3"
+  removed[3]: "Air rune:19","Mind rune:9","Water rune:4"
+  pos: "3292,3282"
+
+# tick 396 inv_change
+inventoryChange:
+  added[3]: "Air rune:17","Mind rune:7","Water rune:2"
+  removed[3]: "Air rune:18","Mind rune:8","Water rune:3"
+  pos: "3292,3282"
+
+# tick 401 pos_change
+move:
+  from: "3292,3282"
+  to: "3292,3283"
+  tick: 401
+  hp: 45/45
+nearby[5]{name,lvl,dist}:
+  Man,0,2
+  Scorpion,14,4
+  Scorpion,14,12
+  Scorpion,14,12
+  Scorpion,14,15
+objects[5]{name,dist,opts}:
+  Rocks gold ore,4,Mine/Prospect
+  Rocks gold ore,5,Mine/Prospect
+  Rocks iron ore,10,Mine/Prospect
+  Rocks iron ore,11,Mine/Prospect
+  Rocks,14,Mine/Prospect
+
+# tick 401 inv_change
+inventoryChange:
+  added[1]: "Bronze arrow:2"
+  removed[0]:
+  pos: "3292,3283"
+
+# tick 407 pos_change
+move:
+  from: "3292,3283"
+  to: "3294,3282"
+  tick: 407
+  hp: 45/45
+nearby[5]{name,lvl,dist}:
+  Man,0,4
+  Scorpion,14,5
+  Scorpion,14,10
+  Scorpion,14,13
+  Camel,0,14
+objects[5]{name,dist,opts}:
+  Rocks gold ore,5,Mine/Prospect
+  Rocks gold ore,6,Mine/Prospect
+  Rocks iron ore,8,Mine/Prospect
+  Rocks iron ore,9,Mine/Prospect
+  Rocks,12,Mine/Prospect
+
+# tick 431 inv_change
+inventoryChange:
+  added[3]: "Air rune:16","Mind rune:6","Water rune:1"
+  removed[3]: "Air rune:17","Mind rune:7","Water rune:2"
+  pos: "3294,3282"
+
+# tick 441 inv_change
+inventoryChange:
+  added[2]: "Air rune:15","Mind rune:5"
+  removed[3]: "Air rune:16","Mind rune:6","Water rune:1"
+  pos: "3294,3282"
+
+# tick 453 inv_change
+inventoryChange:
+  added[2]: "Air rune:14","Mind rune:4"
+  removed[2]: "Air rune:15","Mind rune:5"
+  pos: "3294,3282"
+
+# tick 461 inv_change
+inventoryChange:
+  added[2]: "Air rune:13","Mind rune:3"
+  removed[2]: "Air rune:14","Mind rune:4"
+  pos: "3294,3282"
+
+# tick 469 inv_change
+inventoryChange:
+  added[2]: "Air rune:12","Mind rune:2"
+  removed[2]: "Air rune:13","Mind rune:3"
+  pos: "3294,3282"
+
+# tick 478 inv_change
+inventoryChange:
+  added[2]: "Air rune:11","Mind rune:1"
+  removed[2]: "Air rune:12","Mind rune:2"
+  pos: "3294,3282"
+
+# tick 486 inv_change
+inventoryChange:
+  added[1]: "Air rune:10"
+  removed[2]: "Air rune:11","Mind rune:1"
+  pos: "3294,3282"
+
+# tick 499 inv_change
+inventoryChange:
+  added[1]: "Shortbow:1"
+  removed[1]: "Bronze sword:1"
+  pos: "3294,3282"
