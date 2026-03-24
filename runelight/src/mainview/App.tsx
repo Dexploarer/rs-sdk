@@ -1,6 +1,6 @@
 import { createSignal, For, Show, onMount, onCleanup, createEffect } from "solid-js";
 
-const TABS = ["Status", "Inventory", "Nearby", "Scripts"] as const;
+const TABS = ["Status", "Inventory", "Nearby", "Scripts", "Macros"] as const;
 type Tab = (typeof TABS)[number];
 
 export default function App() {
@@ -84,6 +84,9 @@ export default function App() {
 				</Show>
 				<Show when={activeTab() === "Scripts"}>
 					<ScriptsPanel />
+				</Show>
+				<Show when={activeTab() === "Macros"}>
+					<MacrosPanel />
 				</Show>
 			</div>
 		</div>
@@ -408,6 +411,103 @@ function ScriptsPanel() {
 					<p class="placeholder-text">No output yet</p>
 				</Show>
 			</div>
+		</div>
+	);
+}
+
+// ============ Macros Panel ============
+
+const MACROS = [
+	{ name: "Train Defence", script: "macro-train-defence.ts", icon: "🛡", desc: "Block style on cows/goblins" },
+	{ name: "Train Attack", script: "macro-train-attack.ts", icon: "⚔", desc: "Accurate style on best target" },
+	{ name: "Train Strength", script: "macro-train-strength.ts", icon: "💪", desc: "Aggressive style grind" },
+	{ name: "Bank Run", script: "macro-bank-run.ts", icon: "🏦", desc: "Deposit loot, withdraw food" },
+	{ name: "Cook Food", script: "macro-cook.ts", icon: "🍳", desc: "Cook all raw food at range" },
+	{ name: "Buy Gear", script: "macro-buy-gear.ts", icon: "🛒", desc: "Buy best affordable weapon" },
+	{ name: "Full Grind", script: "macro-full-grind.ts", icon: "🔄", desc: "Train + bank + cook loop" },
+];
+
+function MacrosPanel() {
+	const [running, setRunning] = createSignal(false);
+	const [activeMacro, setActiveMacro] = createSignal("");
+	const [output, setOutput] = createSignal<string[]>([]);
+
+	const GW = "http://localhost:7780";
+
+	// Poll status
+	onMount(() => {
+		const interval = setInterval(async () => {
+			try {
+				const resp = await fetch(`${GW}/script-output`);
+				const data = await resp.json();
+				setRunning(data.running);
+				setActiveMacro(data.script || "");
+				setOutput(data.output || []);
+			} catch {}
+		}, 1500);
+		onCleanup(() => clearInterval(interval));
+	});
+
+	async function runMacro(script: string) {
+		try {
+			await fetch(`${GW}/run-script`, {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ botName: "dexrunner", script }),
+			});
+			setRunning(true);
+			setActiveMacro(script);
+		} catch {}
+	}
+
+	async function stopMacro() {
+		try {
+			await fetch(`${GW}/stop-script`, { method: "POST" });
+			setRunning(false);
+			setActiveMacro("");
+		} catch {}
+	}
+
+	let outputRef: HTMLDivElement | undefined;
+	createEffect(() => {
+		output();
+		if (outputRef) outputRef.scrollTop = outputRef.scrollHeight;
+	});
+
+	return (
+		<div class="panel-section">
+			<h3>One-Click Macros</h3>
+
+			<Show when={running()}>
+				<div class="macro-active">
+					<span class="macro-active-name">{activeMacro()}</span>
+					<button class="script-btn stop" onClick={stopMacro}>Stop</button>
+				</div>
+			</Show>
+
+			<div class="macro-grid">
+				<For each={MACROS}>
+					{(macro) => (
+						<button
+							class={`macro-btn ${running() ? "disabled" : ""}`}
+							onClick={() => !running() && runMacro(macro.script)}
+							title={macro.desc}
+							disabled={running()}
+						>
+							<span class="macro-icon">{macro.icon}</span>
+							<span class="macro-label">{macro.name}</span>
+						</button>
+					)}
+				</For>
+			</div>
+
+			<Show when={output().length > 0}>
+				<div class="macro-output" ref={outputRef}>
+					<For each={output().slice(-30)}>
+						{(line) => <div class="output-line">{line}</div>}
+					</For>
+				</div>
+			</Show>
 		</div>
 	);
 }

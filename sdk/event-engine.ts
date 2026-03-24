@@ -21,6 +21,9 @@ type GameEvent =
     | { type: 'died' }
     | { type: 'position_change'; from: { x: number; z: number }; to: { x: number; z: number } }
     | { type: 'idle' }
+    | { type: 'npc_killed'; name: string; level: number; x: number; z: number }
+    | { type: 'ground_item_appeared'; name: string; count: number; x: number; z: number }
+    | { type: 'equipment_changed'; added: string[]; removed: string[] }
     | { type: 'tick'; state: BotWorldState };
 
 type EventHandler = (event: GameEvent, ctx: EventContext) => void | Promise<void>;
@@ -222,6 +225,61 @@ const BUILT_IN_HOOKS: ContextHook[] = [
             });
         }
     },
+    {
+        // NPC killed — log the kill for tracking efficiency
+        triggers: ['npc_killed'],
+        capture: (event, state) => {
+            if (event.type !== 'npc_killed') return null;
+            const p = state.player!;
+            const combatXp = state.skills.filter(s =>
+                ['Attack', 'Strength', 'Defence', 'Hitpoints', 'Ranged', 'Magic'].includes(s.name)
+            ).map(s => `${s.name}:${s.experience}`);
+            return encode({
+                interaction: {
+                    type: 'npc_killed',
+                    npc: event.name,
+                    npcLevel: event.level,
+                    killPos: `${event.x},${event.z}`,
+                    myHp: `${p.hp}/${p.maxHp}`,
+                    combatXp,
+                }
+            });
+        }
+    },
+    {
+        // Ground item appeared — log notable loot
+        triggers: ['ground_item_appeared'],
+        capture: (event, state) => {
+            if (event.type !== 'ground_item_appeared') return null;
+            // Only journal items that seem valuable or notable
+            if (/^(bones|ashes)$/i.test(event.name)) return null;
+            return encode({
+                interaction: {
+                    type: 'ground_item_appeared',
+                    item: event.name,
+                    count: event.count,
+                    pos: `${event.x},${event.z}`,
+                    inventoryFull: state.inventory.length >= 28,
+                }
+            });
+        }
+    },
+    {
+        // Equipment changed — log gear swaps
+        triggers: ['equipment_changed'],
+        capture: (event, state) => {
+            if (event.type !== 'equipment_changed') return null;
+            const p = state.player!;
+            return encode({
+                interaction: {
+                    type: 'equipment_changed',
+                    added: event.added,
+                    removed: event.removed,
+                    combatLevel: p.combatLevel,
+                }
+            });
+        }
+    },
 ];
 
 
@@ -238,6 +296,9 @@ export class EventEngine {
     private pollInterval = 600; // ms between state checks
     private prevInvHash = '';
     private prevSkillHash = '';
+    private prevEquipHash = '';
+    private prevGroundHash = '';
+    private prevNpcCombatMap = new Map<number, { name: string; level: number; x: number; z: number; inCombat: boolean }>();
     private prevMsgTick = 0;
     private currentTask: string = 'idle';
     private stateLogCounter = 0;
@@ -424,6 +485,53 @@ export class EventEngine {
         const skillHash = state.skills.map(s => `${s.name}:${s.level}`).join('|');
         if (skillHash !== this.prevSkillHash) {
             this.prevSkillHash = skillHash;
+        }
+
+        // --- NPC KILLED ---
+        // Track NPCs that were in combat. If they disappear, they were killed.
+        const currentNpcMap = new Map<number, { name: string; level: number; x: number; z: number; inCombat: boolean }>();
+        for (const npc of state.nearbyNpcs) {
+            currentNpcMap.set(npc.index, { name: npc.name, level: npc.combatLevel, x: npc.x, z: npc.z, inCombat: npc.inCombat });
+        }
+        if (this.prevNpcCombatMap.size > 0) {
+            for (const [index, prevNpc] of this.prevNpcCombatMap) {
+                // NPC was in combat and has disappeared — likely killed
+                if (prevNpc.inCombat && !currentNpcMap.has(index)) {
+                    events.push({ type: 'npc_killed', name: prevNpc.name, level: prevNpc.level, x: prevNpc.x, z: prevNpc.z });
+                }
+            }
+        }
+        this.prevNpcCombatMap = currentNpcMap;
+
+        // --- GROUND ITEM APPEARED ---
+        const groundHash = state.groundItems.map(g => `${g.name}:${g.count}:${g.x}:${g.z}`).sort().join('|');
+        if (groundHash !== this.prevGroundHash) {
+            if (this.prevGroundHash) {
+                const prevSet = new Set(this.prevGroundHash.split('|'));
+                const currEntries = groundHash ? groundHash.split('|') : [];
+                for (const entry of currEntries) {
+                    if (!prevSet.has(entry)) {
+                        const [name, count, x, z] = entry.split(':');
+                        events.push({ type: 'ground_item_appeared', name, count: parseInt(count), x: parseInt(x), z: parseInt(z) });
+                    }
+                }
+            }
+            this.prevGroundHash = groundHash;
+        }
+
+        // --- EQUIPMENT CHANGED ---
+        const equipHash = state.equipment.map(e => `${e.name}:${e.slot}`).sort().join('|');
+        if (equipHash !== this.prevEquipHash) {
+            if (this.prevEquipHash) {
+                const prevNames = new Set(this.prevEquipHash.split('|').map(e => e.split(':')[0]));
+                const currNames = new Set(equipHash ? equipHash.split('|').map(e => e.split(':')[0]) : []);
+                const added = [...currNames].filter(n => !prevNames.has(n));
+                const removed = [...prevNames].filter(n => !currNames.has(n));
+                if (added.length || removed.length) {
+                    events.push({ type: 'equipment_changed', added, removed });
+                }
+            }
+            this.prevEquipHash = equipHash;
         }
 
         // --- TICK (always, for task processing) ---

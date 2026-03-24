@@ -325,3 +325,79 @@ html, body, #app {
 	background: var(--border);
 	border-radius: 2px;
 }
+
+/* Macros */
+.macro-grid {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 6px;
+	margin-bottom: 10px;
+}
+
+.macro-btn {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 2px;
+	padding: 10px 4px;
+	background: var(--bg-input);
+	border: 1px solid var(--border);
+	border-radius: 6px;
+	cursor: pointer;
+	transition: border-color 0.15s;
+}
+
+.macro-btn:hover:not(.disabled) {
+	border-color: var(--accent);
+}
+
+.macro-btn.disabled {
+	opacity: 0.4;
+	cursor: not-allowed;
+}
+
+.macro-icon {
+	font-size: 20px;
+}
+
+.macro-label {
+	font-size: 10px;
+	font-weight: 600;
+	color: var(--text);
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+}
+
+.macro-active {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 6px 10px;
+	background: #1a2e1a;
+	border: 1px solid var(--green);
+	border-radius: 4px;
+	margin-bottom: 8px;
+}
+
+.macro-active-name {
+	color: var(--green);
+	font-size: 11px;
+	font-weight: 600;
+}
+
+.macro-output {
+	background: #111;
+	border: 1px solid var(--border);
+	border-radius: 4px;
+	padding: 6px;
+	max-height: 200px;
+	overflow-y: auto;
+	font-family: "SF Mono", "Fira Code", monospace;
+	font-size: 10px;
+	line-height: 1.4;
+}
+
+.macro-output .output-line {
+	color: #0f0;
+	word-break: break-all;
+}
