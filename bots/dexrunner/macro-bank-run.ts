@@ -1,3 +1,4 @@
+import type { ActionContext } from "../../sdk/micro-actions";
 import { runScript } from '../../sdk/runner';
 import { ChainRunner, bankRun } from '../../sdk/chains';
 
@@ -21,7 +22,8 @@ await runScript(async ({ bot, sdk }) => {
         depositPatterns: [/^raw /i, /^bones$/i, /^feather$/i, /^cowhide$/i],
     });
 
-    const runner = new ChainRunner({ bot, sdk, state: () => sdk.getState()! });
-    const result = await runner.run(chain);
+    const ctx: ActionContext = { bot, sdk, state: () => sdk.getState()! };
+    const runner = new ChainRunner();
+    const result = await runner.run(chain, ctx);
     console.log(`Bank run: ${result.success ? 'OK' : 'FAILED'}`);
 }, { timeout: 5 * 60_000 });

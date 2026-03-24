@@ -1,3 +1,4 @@
+import type { ActionContext } from "../../sdk/micro-actions";
 import { runScript } from '../../sdk/runner';
 import { ChainRunner, cookRun } from '../../sdk/chains';
 
@@ -19,7 +20,8 @@ await runScript(async ({ bot, sdk }) => {
         returnX: state.player!.worldX, returnZ: state.player!.worldZ,
     });
 
-    const runner = new ChainRunner({ bot, sdk, state: () => sdk.getState()! });
-    const result = await runner.run(chain);
+    const ctx: ActionContext = { bot, sdk, state: () => sdk.getState()! };
+    const runner = new ChainRunner();
+    const result = await runner.run(chain, ctx);
     console.log(`Cook run: ${result.success ? 'OK' : 'FAILED'}`);
 }, { timeout: 5 * 60_000 });

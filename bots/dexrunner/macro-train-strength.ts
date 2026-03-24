@@ -1,10 +1,12 @@
+import type { ActionContext } from "../../sdk/micro-actions";
 import { runScript } from '../../sdk/runner';
 import { ChainRunner } from '../../sdk/chains';
 import { trainStrength } from '../../sdk/strategies';
 
 await runScript(async ({ bot, sdk }) => {
     console.log('=== MACRO: Train Strength ===');
-    const runner = new ChainRunner({ bot, sdk, state: () => sdk.getState()! });
+    const ctx: ActionContext = { bot, sdk, state: () => sdk.getState()! };
+    const runner = new ChainRunner();
     const strategy = trainStrength(99);
 
     while (true) {
@@ -15,7 +17,7 @@ await runScript(async ({ bot, sdk }) => {
         if (!chain) { console.log('Goal complete!'); break; }
 
         console.log(`Running chain: ${chain.name}`);
-        const result = await runner.run(chain);
+        const result = await runner.run(chain, ctx);
         console.log(`Chain ${chain.name}: ${result.success ? 'OK' : 'FAILED'} (${result.stepsCompleted} steps)`);
     }
 }, { timeout: 60 * 60_000 });

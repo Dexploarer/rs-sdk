@@ -1,3 +1,4 @@
+import type { ActionContext } from "../../sdk/micro-actions";
 import { runScript } from '../../sdk/runner';
 import { ChainRunner } from '../../sdk/chains';
 import { trainDefence } from '../../sdk/strategies';
@@ -6,7 +7,8 @@ import { trainDefence } from '../../sdk/strategies';
 // Strategy handles: picking training location, banking when full, cooking food
 await runScript(async ({ bot, sdk }) => {
     console.log('=== MACRO: Full Grind (Defence → 45) ===');
-    const runner = new ChainRunner({ bot, sdk, state: () => sdk.getState()! });
+    const ctx: ActionContext = { bot, sdk, state: () => sdk.getState()! };
+    const runner = new ChainRunner();
     const strategy = trainDefence(45);
     let cycles = 0;
 
@@ -22,7 +24,7 @@ await runScript(async ({ bot, sdk }) => {
         }
 
         cycles++;
-        const result = await runner.run(chain);
+        const result = await runner.run(chain, ctx);
 
         if (cycles % 5 === 0) {
             const s = sdk.getState()!;
