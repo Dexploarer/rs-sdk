@@ -1,0 +1,33 @@
+# 2026-03-24T06:57:17
+location:
+  name: Lumbridge Chicken Coop
+  x: 3237
+  z: 3295
+  level: 0
+npcs[10]{name,lvl,dist,aggressive}:
+  Chicken,1,3,?
+  Chicken,1,3,?
+  Chicken,1,4,?
+  Cow,2,6,no
+  Chicken,1,6,no
+  Chicken,1,6,no
+  Cow,2,7,no
+  Cow,2,8,no
+  Chicken,1,8,no
+  Farmer,7,9,no
+objects[10]{name,dist,opts}:
+  Gate,1,Close
+  Gate,1,Close
+  Haystack,5,Search
+  Daisies,5,""
+  Food trough,5,""
+  Potato,5,Pick
+  Potted flower,6,""
+  Potted flower,6,""
+  Gate,6,Open
+  Potato,6,Pick
+groundItems[3]{name,count,dist}:
+  Egg,1,8
+  Egg,1,11
+  Bucket,1,12
+

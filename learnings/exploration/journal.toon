@@ -1,0 +1,45 @@
+# SESSION: 2026-03-24 ~3AM
+
+## Character Decision: Initiate Pure Build
+reason: Defence already ruined past 1 by accident (got hit by dark wizards, leveled to... wait no, Defence is still 1)
+plan: 45 def, 60 atk, 99 str/range/magic
+current_style: Block (Defensive) — training Defence first since it's 1
+
+## Observation: bot.attackNpc() is SLOW
+what: High-level attackNpc walks to target, waits for full combat end, handles errors
+problem: At combat 43 vs chickens Lvl 1, I one-shot them. The walk/wait overhead wastes time.
+insight: Should use low-level sdk.sendInteractNpc() for speed — skip pathfinding, just click and move on
+todo: Write a fast-kill script that uses low-level SDK
+
+## Observation: Not looting drops
+what: Killed 15 chickens, got 0 raw chicken in inventory
+problem: Drops fall on ground but script never picks them up between kills
+insight: Need to check groundItems after each kill and pick up raw chicken + bones
+bones: Bury for Prayer XP (already 27, want 55 for initiate build)
+raw_chicken: Cook on range for food — free HP recovery
+
+## Observation: Dark Wizards nearly killed me
+what: Walking from cow field to Draynor bank, arrived at 14/41 HP
+why: Defence 1 means magic attacks hit full damage. Dark wizards are aggressive south of Draynor.
+lesson: ALWAYS check route dangers before walking. Carry food when traveling.
+safe_route: Go north through Lumbridge to Varrock bank instead, or approach Draynor from north
+
+## Observation: Pickpocketing men is bad at low Thieving
+what: 3gp per success but frequent stuns that trigger combat
+problem: At Thieving 7, fail rate is high. Stun = man attacks = stuck in combat for 30+ seconds
+lesson: Not worth it for gold at this level. Better to kill things and sell drops.
+
+## Observation: Bronze sword at combat 43
+what: Still using starter weapon
+problem: Attack is 42 — can use up to Rune weapons. Bronze sword is terrible DPS.
+priority: Need money to buy a better weapon. Mithril scimitar from Zeke costs 1040gp.
+alt: Could buy steel scimitar for 400gp as a stepping stone
+
+## Plan: Chicken Grind Loop
+1. Kill chickens (Block style for Defence XP)
+2. Loot: raw chicken, bones, feathers
+3. Bury bones on the spot (Prayer XP)
+4. When inventory full of raw chicken: walk to Lumbridge range (3211,3215)
+5. Cook all raw chicken
+6. Bank cooked chicken at... wait, no bank in Lumbridge
+7. Need to figure out food storage — eat as needed or bank at Varrock/Draynor
