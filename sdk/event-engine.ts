@@ -1,9 +1,10 @@
-// Event-driven game engine — watches state changes, emits events, logs in TOON
+// Event-driven game engine — watches state changes, emits events, logs in TOON + SpacetimeDB
 import { encode } from '@toon-format/toon';
 import { appendFileSync, mkdirSync, existsSync } from 'fs';
 import type { BotWorldState } from './types';
 import type { BotSDK } from './index';
 import type { BotActions } from './actions';
+import type { SpacetimeConnector } from './spacetime-connector';
 
 // ============ Types ============
 
@@ -229,6 +230,7 @@ const BUILT_IN_HOOKS: ContextHook[] = [
 export class EventEngine {
     private sdk: BotSDK;
     private bot: BotActions;
+    private stdb: SpacetimeConnector | null = null;
     private handlers: Map<string, EventHandler[]> = new Map();
     private hooks: ContextHook[] = [...BUILT_IN_HOOKS];
     private prev: BotWorldState | null = null;
@@ -238,10 +240,17 @@ export class EventEngine {
     private prevSkillHash = '';
     private prevMsgTick = 0;
     private currentTask: string = 'idle';
+    private stateLogCounter = 0;
 
     constructor(sdk: BotSDK, bot: BotActions) {
         this.sdk = sdk;
         this.bot = bot;
+    }
+
+    /** Attach SpacetimeDB for persistent shared memory */
+    attachSpacetime(connector: SpacetimeConnector) {
+        this.stdb = connector;
+        return this;
     }
 
     /** Add a custom context hook */
@@ -279,6 +288,12 @@ export class EventEngine {
             for (const event of events) {
                 logEvent(event);
                 await this.emit(event);
+            }
+
+            // Log state to SpacetimeDB every 5 ticks (~3 seconds)
+            this.stateLogCounter++;
+            if (this.stdb && this.stateLogCounter % 5 === 0) {
+                try { this.stdb.logState(state); } catch {}
             }
 
             this.prev = state;
@@ -320,6 +335,16 @@ export class EventEngine {
                     }
                 }
             }
+        }
+
+        // Write significant events to SpacetimeDB (skip ticks and idle)
+        if (this.stdb && event.type !== 'tick' && event.type !== 'idle') {
+            try {
+                const tick = state?.tick ?? 0;
+                const eventData: Record<string, any> = { ...event };
+                delete (eventData as any).type;
+                this.stdb.logEvent(tick, event.type, eventData);
+            } catch {}
         }
     }
 

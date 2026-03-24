@@ -1,5 +1,6 @@
 import { runScript } from '../../sdk/runner';
 import { EventEngine } from '../../sdk/event-engine';
+import { SpacetimeConnector } from '../../sdk/spacetime-connector';
 import { encode } from '@toon-format/toon';
 
 // Event-driven Defence grind: reacts to attacks, loots, cooks, banks
@@ -9,6 +10,25 @@ const COOKING_RANGE = { x: 3212, z: 3215 };
 
 await runScript(async ({ bot, sdk }) => {
     const engine = new EventEngine(sdk, bot);
+
+    // Connect to SpacetimeDB shared memory
+    const stdb = new SpacetimeConnector('grind-defence');
+    const stdbConnected = await stdb.connect();
+    if (stdbConnected) {
+        engine.attachSpacetime(stdb);
+        console.log('[SpacetimeDB] Connected — events will be shared');
+
+        // Log initial knowledge
+        stdb.upsertKnowledge('training:chicken_coop', 'training', 'Chicken Coop Defence Training', {
+            location: CHICKEN_AREA,
+            style: 'Block (Defensive)',
+            xpRate: '~36K def XP/hr at combat 43+',
+            risk: 'zero — chickens do 0 damage',
+            loot: 'raw chicken, bones, feathers',
+        }, 0.95);
+    } else {
+        console.log('[SpacetimeDB] Not available — logging to files only');
+    }
 
     // Ensure Block style
     await sdk.sendSetCombatStyle(3);
